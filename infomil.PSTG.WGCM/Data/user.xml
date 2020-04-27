@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <userList>
+    <user ID = "1" FIRSTNAME="farhinah" LASTNAME="Toofany" USERNAME="ft1234" INITIALS="ft" PASSWORD="1234" ISADMIN= "false" PROFILEPIC="assets/img/profiles/profilePic_ft1234.jpg"/>
+    <user ID = "" FIRSTNAME="" LASTNAME="" INITIALS="" PASSWORD="" ISADMIN= "false"/>
+    <user ID = "" FIRSTNAME="" LASTNAME="" INITIALS="" PASSWORD="" ISADMIN= "false"/>
+    <user ID = "" FIRSTNAME="" LASTNAME="" INITIALS="" PASSWORD="" ISADMIN= "false"/>
+    <user ID = "" FIRSTNAME="" LASTNAME="" INITIALS="" PASSWORD="" ISADMIN= "false"/>
+  </userList>
+</root>
