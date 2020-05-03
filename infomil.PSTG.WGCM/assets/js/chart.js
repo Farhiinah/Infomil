@@ -1,5 +1,5 @@
 $(function () {
-  if (localStorage.getItem("CurrentUser")) {
+  if (localStorage.getItem("CurrentUser") && page == "Dashboard") {
     // Pie Chart
     var ctx = document.getElementById("pieChart").getContext("2d");
     var pieChart = new Chart(ctx, {

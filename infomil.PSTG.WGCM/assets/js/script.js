@@ -48,12 +48,13 @@
   $(document).on("click", "#close_navSidebar", function () {
     $("#offcanvas_menu").css("width", "0px");
     $("#sidebar_overlay").hide();
-    $(".inner-wrapper").css("overflow", "scroll");
+    $(".inner-wrapper").css("overflow", "auto");
   });
 
   $(document).on("click", "#sidebar_overlay", function () {
     $("#offcanvas_menu").css("width", "0px");
     $("#sidebar_overlay").hide();
+    $(".inner-wrapper").css("overflow", "auto");
   });
 
   /*================================
@@ -69,45 +70,3 @@
     }
   }
 })();
-
-let makeAjaxReq = async (url, method) => {
-  return await $.ajax({
-    url: url,
-    method: method,
-    contentType: "application/json",
-    dataType: "json",
-  });
-};
-
-let setPagedata = (user) => {
-    let currentUserData = JSON.parse(user);
-  $("#userFullname").html(
-    currentUserData.FIRSTNAME + " " + currentUserData.LASTNAME
-  );
-  $(".profilePic").each(function() {
-    $(this).attr("src", currentUserData.PROFILEPIC);
-  });
-  $("#currentDate").html(getCurrentDate());
-};
-
-let getCurrentDate = () => {
-    const monthNames = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
-  let dateObj = new Date(),
-    month = monthNames[dateObj.getMonth()],
-    day = String(dateObj.getDate()).padStart(2, "0"),
-    year = dateObj.getFullYear();
-    return month + "\n" + day + "," + year;
-};

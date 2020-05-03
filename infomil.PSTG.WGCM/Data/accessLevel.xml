@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <accessLevel>
+    <access ID="87e096fd6d7a4e19ae4135b39e485b07" NAME="admin" MANAGEUSER="true" MANAGELEAVES="true" MANAGEACCESS="true" VIEWREPORTS="true" ISAPPROVER="false" MANAGETEAMS="false" />
+    <access ID="678af57675744c22a9b47c11eced0aa8" NAME="standard user" MANAGEUSER="false" MANAGELEAVES="true" MANAGEACCESS="false" VIEWREPORTS="false" ISAPPROVER="false" MANAGETEAMS="false" />
+    <access ID="0a735e3d600740d79aca24cc1a09396d" NAME="Team lead" MANAGEUSER="True" MANAGELEAVES="True" MANAGEACCESS="False" VIEWREPORTS="False" ISAPPROVER="True" />
+  </accessLevel>
+</root>

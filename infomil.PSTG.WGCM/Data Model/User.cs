@@ -1,42 +1,32 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Web;
+using System.Text.RegularExpressions;
 
 namespace infomil.PSTG.WGCM.Data_Model
 {
-    [DataContract]
-    public class User
-    {
-        private Guid ID = new Guid();
+    public class User { 
+        public string ID { get; set; }
+        public string FIRSTNAME { get; set; }
+        public string LASTNAME { get; set; }
+        public string USERNAME { get; set; }
+        public string EMAIL { get; set; }
+        public string INITIALS { get; set; }
+        public string PASSWORD { get; set; }
+        public string LVLOFACCESS { get; set; }
+        public bool ACTIVE { get; set; }
+        public string PROFILEPIC { get; set; }
 
-        [DataMember]
-        private String FIRSTNAME { get; set; }
-
-        [DataMember]
-        private String LASTNAME { get; set; }
-
-        [DataMember]
-        private String USERNAME { get; set; }
-
-        [DataMember]
-        private String INITIALS { get; set; }
-
-        [DataMember]
-        private String PASSWORD { get; set; }
-
-        [DataMember]
-        private bool ISADMIN { get; set; }
-
-        public User(String fname, String lname, String uname, String ini, String pswd, bool isAdmin)
+        public User(string fname, string lname, string uname, string email, string ini, string pswd, string lvlOfAccess, bool active, string profPic)
         {
+            this.ID = Regex.Replace(Guid.NewGuid().ToString(), "[-]", "").Replace(" ", String.Empty);
             this.FIRSTNAME = fname;
             this.LASTNAME = lname;
             this.USERNAME = uname;
+            this.EMAIL = email;
             this.INITIALS = ini;
             this.PASSWORD = pswd;
-            this.ISADMIN = isAdmin;
+            this.LVLOFACCESS = lvlOfAccess;
+            this.ACTIVE = active;
+            this.PROFILEPIC = profPic;
         }
     }
 }

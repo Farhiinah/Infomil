@@ -1,30 +1,16 @@
-﻿using Newtonsoft.Json;
+﻿using infomil.PSTG.WGCM.Data_Model;
 using System;
-using System.Web;
+using System.Collections;
 using System.Web.Services;
-using System.Xml;
 
 namespace infomil.PSTG.WGCM
 {
     public partial class Login : System.Web.UI.Page
     {
-        protected void Page_Load(object sender, EventArgs e)
-        {
-        }
-
         [WebMethod]
-        public static String GetUserList()
+        public static ArrayList GetUserList()
         {
-            XmlDocument doc = new XmlDocument();
-            XmlTextReader reader = new XmlTextReader(HttpContext.Current.Server.MapPath("Data/user.xml"))
-            {
-                WhitespaceHandling = WhitespaceHandling.None
-            };
-            reader.MoveToContent();
-            reader.Read();
-            doc.Load(reader);
-            String user = JsonConvert.SerializeXmlNode(doc);
-            return user;
+            return Helper.GetUserlist();
         }
     }
 }

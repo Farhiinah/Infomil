@@ -15,13 +15,13 @@ namespace infomil.PSTG.WGCM
     {
 
         /// <summary>
-        /// index control.
+        /// index_Admin control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder index;
+        protected global::System.Web.UI.WebControls.ContentPlaceHolder index_Admin;
 
         /// <summary>
         /// login control.
@@ -31,5 +31,23 @@ namespace infomil.PSTG.WGCM
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ContentPlaceHolder login;
+
+        /// <summary>
+        /// employees control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ContentPlaceHolder employees;
+
+        /// <summary>
+        /// accessManager control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ContentPlaceHolder accessManager;
     }
 }

@@ -1,13 +1,10 @@
-﻿using System;
-using System.Web.UI;
+﻿using System.Web.UI;
 
 namespace infomil.PSTG.WGCM
 {
     public partial class SiteMaster : MasterPage
     {
-        protected void Page_Load(object sender, EventArgs e)
-        {
-
-        }
+        public static string userDB = "Data/user.xml";
+        public static string accessLvlDB = "Data/accessLevel.xml";
     }
 }

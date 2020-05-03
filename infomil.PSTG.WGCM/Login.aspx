@@ -31,53 +31,5 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript">
-        $(document).ready(function () {
-
-            if (localStorage.getItem("CurrentUser")) {
-                window.location.href = "/Default.aspx";
-            }
-
-            $(".loginBtn").click(function () {
-                let userData = {
-                    username: $('#uname').val(),
-                    password: $('#pswd').val()
-                };
-                $("#errLbl").html("");
-                $(".loginBtn").prop("disabled", true);
-                if (userData.username.trim() != "") {
-                    if (userData.password.trim() != "") {
-                        makeAjaxReq("Login.aspx/GetUserList", "POST")
-                            .then((response) => {
-                                let users = JSON.parse(response.d.replace(/[@]/g, "")).userList.user;
-                                if (Array.isArray(users)) {
-                                    let currentUser = users.find(user => user.USERNAME == userData.username && user.PASSWORD == userData.password);
-                                    if (typeof currentUser != "undefined" && localStorage) {
-                                        localStorage.setItem("CurrentUser", JSON.stringify(currentUser));
-                                        window.location.href = "/Default.aspx";
-                                    }
-                                    else {
-                                        $(".loginBtn").prop("disabled", false);
-                                        $("#errLbl").html("Incorrect username or password.");
-                                    }
-                                }
-                            })
-                            .catch((err) => {
-                                $(".loginBtn").prop("disabled", false);
-                                console.log(err);
-                            });
-                    }
-                    else {
-                        $(".loginBtn").prop("disabled", false);
-                        $("#errLbl").html("Password is required.");
-                    }
-                }
-                else {
-                    $(".loginBtn").prop("disabled", false);
-                    $("#errLbl").html("Username is required.");
-                }
-            })
-        });
-    </script>
-
+    <script type="text/javascript" src="assets/js/login.js"></script>
 </asp:Content>
