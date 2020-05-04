@@ -2,6 +2,5 @@
 <root>
   <userList>
     <user ID="7af37aac98ce4ed6966f5ff4d678baaf" FIRSTNAME="Farhiinah" LASTNAME="Toofany" USERNAME="ft1234" INITIALS="ft" EMAIL="ft`gmail.com" PASSWORD="1234" LVLOFACCESS="87e096fd6d7a4e19ae4135b39e485b07" ACTIVE="true" PROFILEPIC="assets/img/profiles/profilePic_ft1234.jpg" />
-    <user ID="485d9676987c46db8f83cc3b6a845c34" FIRSTNAME="Ridwaan" LASTNAME="Jawaheer" USERNAME="rj910062" EMAIL="0295rid1`gmail.com" INITIALS="rj" PASSWORD="1234" LVLOFACCESS="87e096fd6d7a4e19ae4135b39e485b07" ACTIVE="True" PROFILEPIC="assets/img/profiles/profilePic_rj910062.jpeg" />
   </userList>
 </root>
