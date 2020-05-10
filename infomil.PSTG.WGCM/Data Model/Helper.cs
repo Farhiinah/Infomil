@@ -83,6 +83,40 @@ namespace infomil.PSTG.WGCM.Data_Model
             return accessls;
         }
 
+        public static ArrayList GetTeamlist()
+        {
+            Dictionary<string, object> myTeam = (Dictionary<string, object>)new JavaScriptSerializer().DeserializeObject(Regex.Replace(ReadXmlFileToJsonString(SiteMaster.teamDB), "[@]", ""));
+            dynamic teamList = myTeam["teamList"];
+            dynamic teams = teamList["team"];
+            ArrayList teamsls = new ArrayList();
+            if (teams.GetType().IsArray)
+            {
+                foreach (object team in teams)
+                {
+                    teamsls.Add(team);
+                }
+            }
+            else
+            {
+                teamsls.Add(teams);
+            }
+            return teamsls;
+        }
+
+        public static bool TeamExist(string teamName)
+        {
+            ArrayList teamList = GetTeamlist();
+            bool hasTeam = false;
+            foreach (dynamic team in teamList)
+            {
+                if (team["NAME"] == teamName)
+                {
+                    hasTeam = true;
+                }
+            }
+            return hasTeam;
+        }
+
         public static string AddXmlData(string db, string rootElement, string tableName, object obj)
         {
             string status = "OK";

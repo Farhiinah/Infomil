@@ -15,7 +15,7 @@
                 <div class="col-xl-9 col-lg-8 col-md-12">
                     <div class="card shadow-sm grow ctm-border-radius">
                         <div class="card-body align-center">
-                            <h3 class="card-title float-left mb-0 mt-2"><span>Number of access levels: </span><span id="totalAccess">0</span></h3>
+                            <h3 class="card-title float-left mb-0 mt-2"><span># of access levels: </span><span id="totalAccess">0</span></h3>
                             <ul class="nav nav-tabs float-right border-0 tab-list-emp">
                                 <li class="nav-item" data-toggle="modal" data-target="#newAccesslvlPopup">
                                     <a class="nav-link active border-0 font-23 grid-view" href="javascript:void(0)"><i class="fa fa-plus" aria-hidden="true"></i></a>

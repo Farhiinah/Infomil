@@ -128,7 +128,7 @@
                                         </span>
                                     </span>
                                 </a>
-                                <a class="menuItemMobile p-2" href="#">
+                                <a class="menuItemMobile p-2 leaveManagement" href="#">
                                     <span class="media align-items-center">
                                         <span class="lnr lnr-briefcase mr-3"></span>
                                         <span class="media-body text-truncate text-left">

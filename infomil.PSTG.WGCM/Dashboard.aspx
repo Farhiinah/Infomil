@@ -39,12 +39,12 @@
                                         <div class="card-right">
                                             <h4 class="card-title">Teams</h4>
 
-                                            <p class="card-text">30</p>
+                                            <p class="card-text" id="totalTeams">0</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xl-3 col-lg-6 col-sm-6 col-12">
+                            <div class="col-xl-3 col-lg-6 col-sm-6 col-12 leaveManagement">
                                 <div class="card dash-widget ctm-border-radius shadow-sm grow">
                                     <div class="card-body">
                                         <div class="card-icon bg-danger">
@@ -57,7 +57,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xl-3 col-lg-6 col-sm-6 col-12">
+                            <div class="col-xl-3 col-lg-6 col-sm-6 col-12 leaveManagement">
                                 <div class="card dash-widget ctm-border-radius shadow-sm grow">
                                     <div class="card-body">
                                         <div class="card-icon bg-success">
@@ -75,17 +75,17 @@
 
                         <!-- Chart -->
                         <div class="row">
-                            <div class="col-md-6 d-flex">
+                            <!--div class="col-md-6 d-flex">
                                 <div class="card ctm-border-radius shadow-sm flex-fill grow">
                                     <div class="card-header">
-                                        <h3 class="card-title mb-0">Total employees</h3>
+                                        <h3 class="card-title mb-0">Employees' summary</h3>
                                     </div>
                                     <div class="card-body">
                                         <canvas id="pieChart"></canvas>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6 d-flex">
+                            </div-->
+                            <div class="col-md-6 leaveManagement">
                                 <div class="card ctm-border-radius shadow-sm flex-fill grow">
                                     <div class="card-header">
                                         <h3 class="card-title mb-0">Leaves' summary</h3>
@@ -107,22 +107,13 @@
                                         <h3 class="card-title mb-0 d-inline-block">Team leads</h3>
                                         <a href="Employees.aspx" class="dash-card float-right mb-0 text-primary">Manage teams</a>
                                     </div>
-                                    <div class="card-body">
-                                        <div class="media mb-3">
-                                            <div class="e-avatar avatar-online mr-3">
-                                                <img src="assets/img/profiles/img-6.jpg" alt="Maria Cotton" class="img-fluid">
-                                            </div>
-                                            <div class="media-body">
-                                                <h4 class="m-0">Maria Cotton</h4>
-                                                <p class="mb-0 ctm-text-sm">PHP</p>
-                                            </div>
-                                        </div>
-                                        <hr>
+                                    <div class="card-body" id="teamLeadListDashboard">
+                                        
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="col-lg-6 col-md-12 d-flex">
+                            <div class="col-lg-6 col-md-12 leaveManagement">
                                 <!-- Today -->
                                 <div class="card flex-fill today-list shadow-sm grow">
                                     <div class="card-header">
@@ -153,5 +144,5 @@
         </div>
         <!--/Content-->
     </div>
-    <script type="text/javascript" src="assets/js/indexAdmin.js"></script>
+    <script defer type="text/javascript" src="assets/js/indexAdmin.js"></script>
 </asp:Content>

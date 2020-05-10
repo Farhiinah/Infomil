@@ -175,6 +175,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Data Model\AccessLevel.cs" />
     <Compile Include="Data Model\Helper.cs" />
+    <Compile Include="Data Model\Team.cs" />
     <Compile Include="Data Model\User.cs" />
     <Compile Include="Dashboard.aspx.cs">
       <DependentUpon>Dashboard.aspx</DependentUpon>

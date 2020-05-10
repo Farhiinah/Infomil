@@ -1,7 +1,7 @@
 $(function () {
-  if (localStorage.getItem("CurrentUser") && page == "Dashboard") {
+  if (localStorage.getItem("CurrentUser")/* && page == "Dashboard"*/) {
     // Pie Chart
-    var ctx = document.getElementById("pieChart").getContext("2d");
+    /*var ctx = document.getElementById("pieChart").getContext("2d");
     var pieChart = new Chart(ctx, {
       type: "pie",
       data: {
@@ -28,7 +28,7 @@ $(function () {
           display: false,
         },
       },
-    });
+    });*/
 
     // Line Chart
 

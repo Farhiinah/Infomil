@@ -22,7 +22,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-    <link href="assets/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/bootstrap-toggle.min.css">
 
 
     <!-- Linearicon Font -->
@@ -33,9 +33,13 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/select2.min.css">
 
     <!-- jQuery -->
     <script src="assets/js/jquery-3.2.1.min.js"></script>
+
+    <!-- Custom JS -->
+    <script src="assets/js/select2.min.js"></script>
 </head>
 <body>
     <!-- Loader -->
@@ -196,7 +200,8 @@
 
     <!-- Custom Js -->
     <script src="assets/js/notify.min.js"></script>
-    <script src="assets/js/global.js"></script>
+    <script src="assets/js/App.js"></script>
+    <script src="assets/js/util.js"></script>
 
     <!-- Bootstrap Core JS -->
     <script src="assets/js/popper.min.js"></script>

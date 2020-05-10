@@ -21,7 +21,7 @@
         <div class="user-card card shadow-sm bg-white text-center ctm-border-radius grow">
             <div class="user-info card-body">
                 <div class="user-avatar mb-4">
-                    <img src="assets/img/profiles/img-13.jpg" alt="User Avatar" class="img-fluid rounded-circle profilePic" style="object-fit: cover; width: 100px; height: 100px;">
+                    <img src="assets/img/profiles/img-6.jpg" alt="User Avatar" class="img-fluid rounded-circle profilePic" style="object-fit: cover; width: 100px; height: 100px;">
                 </div>
                 <div class="user-details">
                     <h4><b>Welcome <span id="userFullname"></span></b></h4>
@@ -49,7 +49,7 @@
                         <div class="col-6 align-items-center shadow-none text-center">
                             <a href="calendar.html" class="menuItem text-dark p-4 ctm-border-right"><span class="lnr lnr-calendar-full pr-0 pb-lg-2 font-23"></span><span class="">Calendar</span></a>
                         </div>
-                        <div class="col-6 align-items-center shadow-none text-center">
+                        <div class="col-6 align-items-center shadow-none text-center leaveManagement">
                             <a href="view-leave.html" class="menuItem text-dark p-4 ctm-border-right ctm-border-left"><span class="lnr lnr-briefcase pr-0 pb-lg-2 font-23"></span><span class="">Requests</span></a>
                         </div>
                         <div class="col-6 align-items-center shadow-none text-center">

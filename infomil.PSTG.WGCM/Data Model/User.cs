@@ -12,7 +12,7 @@ namespace infomil.PSTG.WGCM.Data_Model
         public string INITIALS { get; set; }
         public string PASSWORD { get; set; }
         public string LVLOFACCESS { get; set; }
-        public bool ACTIVE { get; set; }
+        public string ACTIVE { get; set; }
         public string PROFILEPIC { get; set; }
 
         public User(string fname, string lname, string uname, string email, string ini, string pswd, string lvlOfAccess, bool active, string profPic)
@@ -25,7 +25,7 @@ namespace infomil.PSTG.WGCM.Data_Model
             this.INITIALS = ini;
             this.PASSWORD = pswd;
             this.LVLOFACCESS = lvlOfAccess;
-            this.ACTIVE = active;
+            this.ACTIVE = active.ToString().ToLower();
             this.PROFILEPIC = profPic;
         }
     }

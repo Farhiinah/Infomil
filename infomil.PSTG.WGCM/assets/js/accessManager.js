@@ -53,7 +53,7 @@ let setAccessManagerPagedata = () => {
             <span style="font-size: 1.3em;">
                 ${access.NAME} 
                 ${
-                  index > 1
+                  index > 3
                     ? `<span style="float:right; color: #dc3545;" onclick="delAccessLvl('${access.ID}')">
                 <i class="fa fa-trash"></i>
             </span>`

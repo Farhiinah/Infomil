@@ -1,6 +1,7 @@
 ﻿using infomil.PSTG.WGCM.Data_Model;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -67,6 +68,34 @@ namespace infomil.PSTG.WGCM
         public static string DelUser(string ID)
         {
             return Helper.DelXmlData(ID, SiteMaster.userDB, "userList", "user");
+        }
+
+        [WebMethod]
+        public static ArrayList GetTeamlist()
+        {
+            return Helper.GetTeamlist();
+        }
+
+        [WebMethod]
+        public static string CreateTeam(string TEAMNAME, string TEAMLEAD, string TEAMMEMBERS)
+        {
+            string result = "OK";
+            try
+            {
+                if (!Helper.TeamExist(TEAMNAME))
+                {
+                    Helper.AddXmlData(SiteMaster.teamDB, "teamList", "team", new Team(TEAMNAME, TEAMLEAD, TEAMMEMBERS));
+                }
+                else
+                {
+                    result = "Team already exists.";
+                }
+            }
+            catch (Exception e)
+            {
+                result = e.Message;
+            }
+            return result;
         }
     }
 }
