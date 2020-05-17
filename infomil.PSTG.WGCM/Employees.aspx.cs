@@ -1,7 +1,6 @@
 ﻿using infomil.PSTG.WGCM.Data_Model;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -18,7 +17,7 @@ namespace infomil.PSTG.WGCM
         }
 
         [WebMethod]
-        public static string CreateUser(string FIRSTNAME, string LASTNAME, string USERNAME, string EMAILADDRESS, string INITIALS, string PASSWORD, string LVLOFACCESS, string PROFILEPIC, string fileExtension)
+        public static string CreateUser(string FIRSTNAME, string LASTNAME, string USERNAME, string EMAILADDRESS, string INITIALS, string PASSWORD, string LVLOFACCESS, string PROFILEPIC, string fileExtension, string SICKLEAVE, string LOCALLEAVE, string ANNUALLEAVE)
         {
             string result = "OK";
             try
@@ -30,7 +29,7 @@ namespace infomil.PSTG.WGCM
                     {
                         filePath = "assets/img/profiles/profilePic_" + USERNAME + "." + fileExtension;
                     }
-                    string saveUserResponse = Helper.AddXmlData(SiteMaster.userDB, "userList", "user", new User(FIRSTNAME, LASTNAME, USERNAME, Regex.Replace(EMAILADDRESS, "[@]", "`"), INITIALS, PASSWORD, LVLOFACCESS, true, filePath));
+                    string saveUserResponse = Helper.AddXmlData(SiteMaster.userDB, "userList", "user", new User(FIRSTNAME, LASTNAME, USERNAME, Regex.Replace(EMAILADDRESS, "[@]", "`"), INITIALS, PASSWORD, LVLOFACCESS, true, filePath, SICKLEAVE, LOCALLEAVE, ANNUALLEAVE, ""));
                     if (saveUserResponse == "OK" && PROFILEPIC != null)
                     {
                         File.WriteAllBytes(HttpContext.Current.Server.MapPath(filePath), Convert.FromBase64String(PROFILEPIC));

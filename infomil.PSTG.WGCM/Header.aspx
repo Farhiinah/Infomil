@@ -39,14 +39,6 @@
                                                 </span>
                                             </span>
                                         </a>
-                                        <a class="dropdown-item p-2" href="settings.html">
-                                            <span class="media align-items-center">
-                                                <span class="lnr lnr-cog mr-3"></span>
-                                                <span class="media-body text-truncate">
-                                                    <span class="text-truncate">Settings</span>
-                                                </span>
-                                            </span>
-                                        </a>
                                         <a id="logoutBtn" class="dropdown-item p-2" href="javascript:void(0)">
                                             <span class="media align-items-center">
                                                 <span class="lnr lnr-power-switch mr-3"></span>
@@ -80,10 +72,7 @@
                             </div>
                             <div class="user-notification-block align-center">
                                 <div class="top-nav-search">
-                                    <form>
-                                        <input type="text" class="form-control" placeholder="Search here">
-                                        <button class="btn" type="submit"><i class="fa fa-search"></i></button>
-                                    </form>
+
                                 </div>
                             </div>
                             <hr>
@@ -96,7 +85,7 @@
                                         </span>
                                     </span>
                                 </a>
-                                <a class="menuItemMobile p-2" href="Employees.aspx">
+                                <a class="menuItemMobile p-2 userManagement" href="Employees.aspx">
                                     <span class="media align-items-center">
                                         <span class="lnr lnr-users mr-3"></span>
                                         <span class="media-body text-truncate text-left">
@@ -104,7 +93,7 @@
                                         </span>
                                     </span>
                                 </a>
-                                <a class="menuItemMobile p-2" href="Access_Manager.aspx">
+                                <a class="menuItemMobile p-2 accessManagement" href="Access_Manager.aspx">
                                     <span class="media align-items-center">
                                         <span class="lnr lnr-lock mr-3"></span>
                                         <span class="media-body text-truncate text-left">
@@ -112,31 +101,23 @@
                                         </span>
                                     </span>
                                 </a>
-                                <a class="menuItemMobile p-2" href="company.html">
-                                    <span class="media align-items-center">
-                                        <span class="lnr lnr-apartment mr-3"></span>
-                                        <span class="media-body text-truncate text-left">
-                                            <span class="text-truncate text-left">Company</span>
-                                        </span>
-                                    </span>
-                                </a>
-                                <a class="p-2" href="calendar.html">
-                                    <span class="media align-items-center">
-                                        <span class="lnr lnr-calendar-full mr-3"></span>
-                                        <span class="media-body text-truncate text-left">
-                                            <span class="text-truncate text-left">Calendar</span>
-                                        </span>
-                                    </span>
-                                </a>
-                                <a class="menuItemMobile p-2 leaveManagement" href="#">
+                                <a class="menuItemMobile p-2 leaveManagement" href="Leaves_Manager.aspx">
                                     <span class="media align-items-center">
                                         <span class="lnr lnr-briefcase mr-3"></span>
+                                        <span class="media-body text-truncate text-left">
+                                            <span class="text-truncate text-left">Leaves</span>
+                                        </span>
+                                    </span>
+                                </a>
+                                <a class="menuItemMobile p-2 requestManagement" href="Requests_Manager.aspx">
+                                    <span class="media align-items-center">
+                                        <span class="lnr lnr-envelope mr-3"></span>
                                         <span class="media-body text-truncate text-left">
                                             <span class="text-truncate text-left">Requests</span>
                                         </span>
                                     </span>
                                 </a>
-                                <a class="menuItemMobile p-2" href="reports.html">
+                                <a class="menuItemMobile p-2 reportsManagement" href="#">
                                     <span class="media align-items-center">
                                         <span class="lnr lnr-rocket mr-3"></span>
                                         <span class="media-body text-truncate text-left">
@@ -144,9 +125,7 @@
                                         </span>
                                     </span>
                                 </a>
-
-
-                                <a class="menuItemMobile p-2" href="employment.html">
+                                <a class="menuItemMobile p-2" href="#">
                                     <span class="media align-items-center">
                                         <span class="lnr lnr-user mr-3"></span>
                                         <span class="media-body text-truncate text-left">
@@ -154,7 +133,7 @@
                                         </span>
                                     </span>
                                 </a>
-                                <a class="menuItemMobile p-2" href="login.html">
+                                <a class="menuItemMobile p-2" href="#">
                                     <span class="media align-items-center">
                                         <span class="lnr lnr-power-switch mr-3"></span>
                                         <span class="media-body text-truncate text-left">

@@ -65,6 +65,87 @@
             </div>
         </div>
     </div>
+    <div id="newEmpPopup" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title">New employee</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" style="font-size: 1.5em;">&times;</span>
+                    </button>
+                </div>
+                <form id="newUser">
+                    <div class="modal-body">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" style="font-size: 1em;"><i class="fa fa-user-circle-o" aria-hidden="true"></i></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="First name" id="fname" required>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" style="font-size: 1em;"><i class="fa fa-user-circle-o" aria-hidden="true"></i></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="Last name" id="lname" required>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" style="font-size: 1em;"><i class="fa fa-user-circle-o" aria-hidden="true"></i></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="Username" id="uname" disabled>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" style="font-size: 1em;"><i class="fa fa-envelope" aria-hidden="true"></i></span>
+                            </div>
+                            <input type="email" class="form-control" placeholder="Email address" id="emailAdd" required>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" style="font-size: 1em;"><i class="fa fa-lock" aria-hidden="true"></i></span>
+                            </div>
+                            <input type="password" class="form-control" placeholder="Password" id="password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlSelect1">Level of access</label>
+                            <select class="form-control" id="lvlAccessList">
+                            </select>
+                        </div>
+                        
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" style="font-size: 1em;"><i class="fa fa-suitcase" aria-hidden="true"></i></span>
+                            </div>
+                            <input type="number" class="form-control" placeholder="Sick leave" id="sickLeave" required>
+                        </div>
+                        
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" style="font-size: 1em;"><i class="fa fa-suitcase" aria-hidden="true"></i></span>
+                            </div>
+                            <input type="number" class="form-control" placeholder="Local leave" id="localLeave" required>
+                        </div>
+                        
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" style="font-size: 1em;"><i class="fa fa-suitcase" aria-hidden="true"></i></span>
+                            </div>
+                            <input type="number" class="form-control" placeholder="Annual leave" id="annualLeave" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleFormControlFile1">Profile picture</label>
+                            <input type="file" class="form-control-file" id="profPic" accept="image/*">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal" style="font-size: 1em;">Cancel</button>
+                        <button type="submit" class="btn btn-primary" style="font-size: 1em;">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <div id="newTeamsPopup" class="modal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -91,7 +172,6 @@
                             <select class="form-control" id="employeeList" multiple="multiple" style="width: 100%;" required>
                             </select>
                         </div>
-
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-dismiss="modal" style="font-size: 1em;">Cancel</button>
@@ -103,6 +183,6 @@
     </div>
     <!--/Content-->
 
-
+    <script src="assets/js/EmployeeManager.js"></script>
     <script type="text/javascript" src="assets/js/employeeAdmin.js"></script>
 </asp:Content>

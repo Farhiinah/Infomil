@@ -4,25 +4,30 @@ class App {
       this.loadAllData()
         .then((dataList) => {
           let users = dataList[0];
-
+          if(localStorage && localStorage.getItem("CurrentUser") != null) { 
+            this.reloadCurrentUser(dataList[0]);
+          }
           this.PAGE = window.location.href
             .replace("https://", "")
             .split("/")[1]
             .split(".")[0];
           this.USERLIST = [];
-          this.TEAMLIST = [];
+          this.TEAMLIST = []; 
+          this.LEAVELIST = dataList[3];
           this.ACCESSLIST = dataList[2];
-          this.CURRENTUSER = this.loadUserAccess(
+          this.CURRENTUSER = localStorage && localStorage.getItem("CurrentUser") != null ? this.loadUserDetails(
             JSON.parse(localStorage.getItem("CurrentUser")),
-            this.ACCESSLIST
-          );
+            this.ACCESSLIST,
+            this.LEAVELIST
+          ) : null;
           users.forEach((user) => {
-            this.USERLIST.push(this.loadUserAccess(user, this.ACCESSLIST));
+            this.USERLIST.push(this.loadUserDetails(user, this.ACCESSLIST, this.LEAVELIST));
           });
           dataList[1].forEach((team) => {
             this.TEAMLIST.push(this.loadTeamsDetails(users, team));
           });
           this.checkCurrentPageInstance(this.PAGE);
+          localStorage.getItem("CurrentUser") != null ? this.enforceUserRights(this.CURRENTUSER) : this.endLoad();
           resolve(this);
         })
         .catch((error) => {
@@ -30,11 +35,19 @@ class App {
         });
     });
   }
+  reloadCurrentUser(userlist) {
+    let currentUser = userlist.find(
+      (user) =>
+        user.ID == JSON.parse(localStorage.getItem("CurrentUser")).ID
+    );
+    localStorage.setItem("CurrentUser", JSON.stringify(currentUser));
+  }
   loadAllData() {
     return Promise.all([
       this._loadAllDataFx.loadUsers(),
       this._loadAllDataFx.loadTeams(),
       this._loadAllDataFx.loadAccess(),
+      this._loadAllDataFx.loadLeaves(),
     ]);
   }
   _loadAllDataFx = {
@@ -71,14 +84,42 @@ class App {
           });
       });
     },
+    loadLeaves: () => {
+      return new Promise((resolve, reject) => {
+        makeAjaxReq("Leaves_Manager.aspx/GetLeavelist", null)
+          .then((response) => {
+            resolve(response.d);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
+    },
   };
-  loadUserAccess(user, accessList) {
+  loadUserDetails(user, accessList, leaveList) {
     if (user) {
       accessList.forEach((access) => {
         if (access.ID == user.LVLOFACCESS) {
           user.LVLOFACCESS = access;
         }
       });
+      let currentUserLeaves = user.LEAVELIST.includes(";") ? user.LEAVELIST.split(";") : user.LEAVELIST.toString();
+      let userLeaveList = [];
+      leaveList.forEach((leave) => {
+        if(Array.isArray(currentUserLeaves)) {
+          currentUserLeaves.forEach((userLeave) => {
+            if(userLeave == leave.ID) {
+              userLeaveList.push(leave);
+            }
+          });
+        }
+        else {
+          if(currentUserLeaves == leave.ID) {
+            userLeaveList.push(leave);
+          }
+        }
+      });
+      user.LEAVELIST = userLeaveList;
     }
     return user;
   }
@@ -166,10 +207,10 @@ class App {
       // Sidemenu
       $("a.menuItem").each(function () {
         let currentLink = $(this).attr("href").split(".")[0];
-        if (currentLink.includes("_")) {
-          currentLink = currentLink.replace(/[_]/g, " ");
-        }
         if (currentLink == page) {
+          if (currentLink.includes("_")) {
+            currentLink = currentLink.replace(/[_]/g, " ");
+          }
           $(this).removeClass("text-dark").addClass("text-white active");
         }
       });
@@ -177,13 +218,88 @@ class App {
       // Sidemenu mobile mobileActive
       $("a.menuItemMobile").each(function () {
         let currentLink = $(this).attr("href").split(".")[0];
-        if (currentLink.includes("_")) {
-          currentLink = currentLink.replace(/[_]/g, " ");
-        }
         if (currentLink == page) {
+          if (currentLink.includes("_")) {
+            currentLink = currentLink.replace(/[_]/g, " ");
+          }
           $(this).find("span").addClass("mobileActive");
         }
       });
     },
   };
+  renderList(domContainer, list, emptyMessage) {
+    $(domContainer).html("");
+    if (list.length > 0) {
+      list.forEach((item) => {
+        $(domContainer).append(item);
+      });
+    } else {
+      $(domContainer).html(
+        `<div style="width: 80%; margin: 0 auto;"><p style="text-align: center;">${emptyMessage}</p></div>`
+      );
+    }
+  }
+  addListener(domContainer, listener, action, params, preventDefault) {
+    let fn = this._addListenerFx.getFunctionByName(action);
+    $(domContainer).on(listener, function (event) {
+      preventDefault
+        ? event.preventDefault()
+        : console.log("Default event: " + event.type);
+      try {
+        fn.call(this, params);
+      } catch (e) {
+        console.log(e);
+      }
+    });
+  }
+  _addListenerFx = {
+    getFunctionByName: (functionName, context) => {
+      if (typeof window == "undefined") {
+        context = context || global;
+      } else {
+        context = context || window;
+      }
+      let namespaces = functionName.split(".");
+      let functionToExecute = namespaces.pop();
+      for (let i = 0; i < namespaces.length; i++) {
+        context = context[namespaces[i]];
+      }
+      if (context) {
+        return context[functionToExecute];
+      } else {
+        return undefined;
+      }
+    },
+  };
+  endLoad() {
+    console.log("Page loaded");
+  }
+  enforceUserRights(currentUser) {
+    let rights = currentUser.LVLOFACCESS;
+    if (rights.MANAGELEAVES != "true") {
+      $(".leaveManagement").each(function () {
+        $(this).hide();
+      });
+    }
+    if (rights.MANAGEUSER != "true") {
+      $(".userManagement").each(function () {
+        $(this).hide();
+      });
+    }
+    if (rights.MANAGEACCESS != "true") {
+      $(".accessManagement").each(function () {
+        $(this).hide();
+      });
+    }
+    if (rights.VIEWREPORTS != "true") {
+      $(".reportsManagement").each(function () {
+        $(this).hide();
+      });
+    }
+    if (rights.ISAPPROVER != "true") {
+      $(".requestManagement").each(function () {
+        $(this).hide();
+      });
+    }
+  }
 }

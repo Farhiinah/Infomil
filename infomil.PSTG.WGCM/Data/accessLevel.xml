@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <accessLevel>
-    <access ID="87e096fd6d7a4e19ae4135b39e485b07" NAME="Admin" MANAGEUSER="true" MANAGELEAVES="false" MANAGEACCESS="true" VIEWREPORTS="true" ISAPPROVER="false" MANAGETEAMS="true" />
-    <access ID="678af57675744c22a9b47c11eced0aa8" NAME="Standard user" MANAGEUSER="false" MANAGELEAVES="true" MANAGEACCESS="false" VIEWREPORTS="false" ISAPPROVER="false" MANAGETEAMS="false" />
-    <access ID="94d7b41571da4cccb3d0cb11cc620d69" NAME="Team lead" MANAGEUSER="false" MANAGELEAVES="true" MANAGEACCESS="false" VIEWREPORTS="true" ISAPPROVER="true" MANAGETEAMS="false" />
-    <access ID="5a56dcc19d924247b5d1f1284a3505b5" NAME="Manager" MANAGEUSER="true" MANAGELEAVES="true" MANAGEACCESS="false" VIEWREPORTS="true" ISAPPROVER="true" MANAGETEAMS="true" />
+    <access ID="87e096fd6d7a4e19ae4135b39e485b07" NAME="Admin" MANAGEUSER="true" MANAGELEAVES="false" MANAGEACCESS="true" VIEWREPORTS="true" ISAPPROVER="false"/>
+    <access ID="678af57675744c22a9b47c11eced0aa8" NAME="Standard user" MANAGEUSER="false" MANAGELEAVES="true" MANAGEACCESS="false" VIEWREPORTS="false" ISAPPROVER="false"/>
+    <access ID="94d7b41571da4cccb3d0cb11cc620d69" NAME="Team lead" MANAGEUSER="false" MANAGELEAVES="true" MANAGEACCESS="false" VIEWREPORTS="true" ISAPPROVER="true"/>
+    <access ID="5a56dcc19d924247b5d1f1284a3505b5" NAME="Manager" MANAGEUSER="true" MANAGELEAVES="true" MANAGEACCESS="false" VIEWREPORTS="true" ISAPPROVER="true"/>
   </accessLevel>
 </root>

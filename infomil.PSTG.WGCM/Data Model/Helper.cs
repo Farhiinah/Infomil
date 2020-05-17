@@ -8,8 +8,8 @@ using System.Collections;
 using System.Xml.Linq;
 using System;
 using System.Reflection;
-using System.Drawing;
-using System.IO;
+using System.Diagnostics;
+using System.Linq.Expressions;
 
 namespace infomil.PSTG.WGCM.Data_Model
 {
@@ -33,18 +33,25 @@ namespace infomil.PSTG.WGCM.Data_Model
         {
             Dictionary<string, object> myUser = (Dictionary<string, object>)new JavaScriptSerializer().DeserializeObject(Regex.Replace(Regex.Replace(ReadXmlFileToJsonString(SiteMaster.userDB), "[@]", ""), "[`]", "@"));
             dynamic userList = myUser["userList"];
-            dynamic users = userList["user"];
             ArrayList userls = new ArrayList();
-            if (users.GetType().IsArray)
+            try
             {
-                foreach (object user in users)
+                dynamic users = userList["user"];
+                if (users.GetType().IsArray)
                 {
-                    userls.Add(user);
+                    foreach (object user in users)
+                    {
+                        userls.Add(user);
+                    }
+                }
+                else
+                {
+                    userls.Add(users);
                 }
             }
-            else
+            catch (Exception e)
             {
-                userls.Add(users);
+                Trace.TraceInformation(e.Message);
             }
             return userls;
         }
@@ -53,7 +60,7 @@ namespace infomil.PSTG.WGCM.Data_Model
         {
             ArrayList userList = GetUserlist();
             bool hasUser = false;
-            foreach(dynamic user in userList)
+            foreach (dynamic user in userList)
             {
                 if (user["EMAIL"] == email)
                 {
@@ -67,18 +74,25 @@ namespace infomil.PSTG.WGCM.Data_Model
         {
             Dictionary<string, object> myAccess = (Dictionary<string, object>)new JavaScriptSerializer().DeserializeObject(Regex.Replace(ReadXmlFileToJsonString(SiteMaster.accessLvlDB), "[@]", ""));
             dynamic accessList = myAccess["accessLevel"];
-            dynamic access = accessList["access"];
             ArrayList accessls = new ArrayList();
-            if (access.GetType().IsArray)
+            try
             {
-                foreach (object user in access)
+                dynamic access = accessList["access"];
+                if (access.GetType().IsArray)
                 {
-                    accessls.Add(user);
+                    foreach (object user in access)
+                    {
+                        accessls.Add(user);
+                    }
+                }
+                else
+                {
+                    accessls.Add(access);
                 }
             }
-            else
+            catch (Exception e)
             {
-                accessls.Add(access);
+                Trace.TraceInformation(e.Message);
             }
             return accessls;
         }
@@ -87,18 +101,25 @@ namespace infomil.PSTG.WGCM.Data_Model
         {
             Dictionary<string, object> myTeam = (Dictionary<string, object>)new JavaScriptSerializer().DeserializeObject(Regex.Replace(ReadXmlFileToJsonString(SiteMaster.teamDB), "[@]", ""));
             dynamic teamList = myTeam["teamList"];
-            dynamic teams = teamList["team"];
             ArrayList teamsls = new ArrayList();
-            if (teams.GetType().IsArray)
+            try
             {
-                foreach (object team in teams)
+                dynamic teams = teamList["team"];
+                if (teams.GetType().IsArray)
                 {
-                    teamsls.Add(team);
+                    foreach (object team in teams)
+                    {
+                        teamsls.Add(team);
+                    }
+                }
+                else
+                {
+                    teamsls.Add(teams);
                 }
             }
-            else
+            catch (Exception e)
             {
-                teamsls.Add(teams);
+                Trace.TraceInformation(e.Message);
             }
             return teamsls;
         }
@@ -115,6 +136,61 @@ namespace infomil.PSTG.WGCM.Data_Model
                 }
             }
             return hasTeam;
+        }
+
+        public static ArrayList GetLeavelist()
+        {
+            Dictionary<string, object> myLeave = (Dictionary<string, object>)new JavaScriptSerializer().DeserializeObject(Regex.Replace(ReadXmlFileToJsonString(SiteMaster.leaveDB), "[@]", ""));
+            dynamic leaveList = myLeave["leaveList"];
+            ArrayList leavesls = new ArrayList();
+            try
+            {
+                dynamic leaves = leaveList["leave"];
+                if (leaves.GetType().IsArray)
+                {
+                    foreach (object leave in leaves)
+                    {
+                        leavesls.Add(leave);
+                    }
+                }
+                else
+                {
+                    leavesls.Add(leaves);
+                }
+            }
+            catch (Exception e)
+            {
+                Trace.TraceInformation(e.Message);
+            }
+            return leavesls;
+        }
+
+        public static bool DateOverlaps(DateTime sDate, DateTime eDate, string currentLeaveList)
+        {
+            bool isOverlapping = false;
+            ArrayList leaveList = GetLeavelist();
+            String[] userLeaveIdList = currentLeaveList.Split(';');
+            try
+            {
+                foreach (dynamic leave in leaveList)
+                {
+                    if (sDate < DateTime.ParseExact(leave["ENDDATE"], "dd/MM/yyyy", null) && DateTime.ParseExact(leave["STARTDATE"], "dd/MM/yyyy", null) < eDate)
+                    {
+                        foreach (string leaveId in userLeaveIdList)
+                        {
+                            if(leave["ID"] == leaveId)
+                            {
+                                isOverlapping = true;
+                            }
+                        }
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                Trace.TraceInformation(e.Message);
+            }
+            return isOverlapping;
         }
 
         public static string AddXmlData(string db, string rootElement, string tableName, object obj)
@@ -158,7 +234,7 @@ namespace infomil.PSTG.WGCM.Data_Model
                 }
                 xdoc.Save(path);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 status = e.Message;
             }
@@ -175,7 +251,7 @@ namespace infomil.PSTG.WGCM.Data_Model
                 var ls = xdoc.Element("root").Element(rootElement).Elements(tableName);
                 foreach (var element in ls)
                 {
-                    if(element.Attribute("ID").Value == id)
+                    if (element.Attribute("ID").Value == id)
                     {
                         element.Remove();
                     }
@@ -187,6 +263,30 @@ namespace infomil.PSTG.WGCM.Data_Model
                 status = e.Message;
             }
             return status;
+        }
+
+        public static string GetXmlAttributeData(string id, string db, string rootElement, string tableName, string attribute)
+        {
+            string val = "";
+            try
+            {
+                string path = HttpContext.Current.Server.MapPath(db);
+                XDocument xdoc = XDocument.Load(path);
+                var ls = xdoc.Element("root").Element(rootElement).Elements(tableName);
+                foreach (var element in ls)
+                {
+                    if (element.Attribute("ID").Value == id)
+                    {
+                        val = element.Attribute(attribute).Value;
+                    }
+                }
+                xdoc.Save(path);
+            }
+            catch (Exception e)
+            {
+                Trace.TraceInformation(e.Message);
+            }
+            return val;
         }
     }
 }

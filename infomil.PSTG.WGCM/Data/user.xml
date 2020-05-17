@@ -1,9 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <userList>
-    <user ID="7af37aac98ce4ed6966f5ff4d678baaf" FIRSTNAME="Farhiinah" LASTNAME="Toofany" USERNAME="ft1234" INITIALS="ft" EMAIL="ft`gmail.com" PASSWORD="1234" LVLOFACCESS="87e096fd6d7a4e19ae4135b39e485b07" ACTIVE="true" PROFILEPIC="assets/img/profiles/profilePic_ft1234.jpg" />
-    <user ID="49f1a8fde931466b9a5fb0e4780b6acb" FIRSTNAME="Test1" LASTNAME="Test2" USERNAME="tt190078" EMAIL="test0`gmail.com" INITIALS="tt" PASSWORD="1234" LVLOFACCESS="678af57675744c22a9b47c11eced0aa8" ACTIVE="false" PROFILEPIC="assets/img/profiles/img-6.jpg" />
-    <user ID="f3a721b8ed924762af956ba8ed3d4560" FIRSTNAME="Marie" LASTNAME="Scott" USERNAME="ms520724" EMAIL="ms`mail.com" INITIALS="ms" PASSWORD="1234" LVLOFACCESS="94d7b41571da4cccb3d0cb11cc620d69" ACTIVE="true" PROFILEPIC="assets/img/profiles/img-6.jpg" />
-    <user ID="9ea33e9c964849878cc0aeb13b09ce61" FIRSTNAME="Test" LASTNAME="Testname" USERNAME="tt900753" EMAIL="test`mail.com" INITIALS="tt" PASSWORD="1234" LVLOFACCESS="678af57675744c22a9b47c11eced0aa8" ACTIVE="true" PROFILEPIC="assets/img/profiles/img-6.jpg" />
+    <user ID="7af37aac98ce4ed6966f5ff4d678baaf" FIRSTNAME="Farhiinah" LASTNAME="Toofany" USERNAME="ft1234" INITIALS="ft" EMAIL="ft`gmail.com" PASSWORD="1234" LVLOFACCESS="678af57675744c22a9b47c11eced0aa8" ACTIVE="true" PROFILEPIC="assets/img/profiles/profilePic_ft1234.jpg" SICK_LEAVE="3" LOCAL_LEAVE="8" ANNUAL_LEAVE="5" LEAVELIST="51e63f97959444739e7a4fe6c0c60dd6;5344ea1bdd8040749f75f56adbd86de7;36fed8d68ed343a79338384317c820ad;053ba1d03f934715899d884db1a413cb;f67bf2980902495a86727637537b603f" />
+    <user ID="4dac4e499afa4f448b4ba64b4775c07d" FIRSTNAME="John" LASTNAME="Doe" USERNAME="jd156748" EMAIL="jd`mail.com" INITIALS="jd" PASSWORD="1234" LVLOFACCESS="678af57675744c22a9b47c11eced0aa8" ACTIVE="true" PROFILEPIC="assets/img/profiles/img-6.jpg" SICK_LEAVE="10" LOCAL_LEAVE="22" ANNUAL_LEAVE="5" LEAVELIST="" />
+    <user ID="181627b135d94eda8e5b87b276747bfa" FIRSTNAME="Jane" LASTNAME="Doe" USERNAME="jd192968" EMAIL="0295rid1`gmail.com" INITIALS="jd" PASSWORD="1234" LVLOFACCESS="94d7b41571da4cccb3d0cb11cc620d69" ACTIVE="true" PROFILEPIC="assets/img/profiles/img-6.jpg" SICK_LEAVE="15" LOCAL_LEAVE="22" ANNUAL_LEAVE="10" LEAVELIST="" />
   </userList>
 </root>

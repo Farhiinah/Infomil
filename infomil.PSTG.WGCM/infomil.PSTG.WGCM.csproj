@@ -45,6 +45,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -126,7 +127,9 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Header.aspx" />
+    <Content Include="Leaves_Manager.aspx" />
     <Content Include="Login.aspx" />
+    <Content Include="Requests_Manager.aspx" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
@@ -175,6 +178,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Data Model\AccessLevel.cs" />
     <Compile Include="Data Model\Helper.cs" />
+    <Compile Include="Data Model\Leaves.cs" />
     <Compile Include="Data Model\Team.cs" />
     <Compile Include="Data Model\User.cs" />
     <Compile Include="Dashboard.aspx.cs">
@@ -201,6 +205,13 @@
     <Compile Include="Header.aspx.designer.cs">
       <DependentUpon>Header.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Leaves_Manager.aspx.cs">
+      <DependentUpon>Leaves_Manager.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Leaves_Manager.aspx.designer.cs">
+      <DependentUpon>Leaves_Manager.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -209,6 +220,13 @@
       <DependentUpon>Login.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Requests_Manager.aspx.cs">
+      <DependentUpon>Requests_Manager.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Requests_Manager.aspx.designer.cs">
+      <DependentUpon>Requests_Manager.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Sidebar.aspx.cs">
       <DependentUpon>Sidebar.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

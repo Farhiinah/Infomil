@@ -13,9 +13,9 @@ namespace infomil.PSTG.WGCM
         }
 
         [WebMethod]
-        public static string SetAccesslevel(string NAME, bool MANAGEUSER, bool MANAGELEAVES, bool MANAGEACCESS, bool VIEWREPORTS, bool ISAPPROVER, bool MANAGETEAMS)
+        public static string SetAccesslevel(string NAME, bool MANAGEUSER, bool MANAGELEAVES, bool MANAGEACCESS, bool VIEWREPORTS, bool ISAPPROVER)
         {
-            return Helper.AddXmlData(SiteMaster.accessLvlDB, "accessLevel", "access", new AccessLevel(NAME, MANAGEUSER, MANAGELEAVES, MANAGEACCESS, VIEWREPORTS, ISAPPROVER, MANAGETEAMS));
+            return Helper.AddXmlData(SiteMaster.accessLvlDB, "accessLevel", "access", new AccessLevel(NAME, MANAGEUSER, MANAGELEAVES, MANAGEACCESS, VIEWREPORTS, ISAPPROVER));
         }
 
         [WebMethod]

@@ -12,8 +12,7 @@ namespace infomil.PSTG.WGCM.Data_Model
         public string MANAGEACCESS { get; set; }
         public string VIEWREPORTS { get; set; }
         public string ISAPPROVER { get; set; }
-        public string MANAGETEAMS { get; set; }
-        public AccessLevel(string name, bool muser, bool mleaves, bool maccess, bool vreport, bool isapprover, bool mteams)
+        public AccessLevel(string name, bool muser, bool mleaves, bool maccess, bool vreport, bool isapprover)
         {
             this.ID = Regex.Replace(Guid.NewGuid().ToString(), "[-]", "").Replace(" ", String.Empty);
             this.NAME = name;
@@ -22,7 +21,6 @@ namespace infomil.PSTG.WGCM.Data_Model
             this.MANAGEACCESS = maccess.ToString().ToLower();
             this.VIEWREPORTS = vreport.ToString().ToLower();
             this.ISAPPROVER = isapprover.ToString().ToLower();
-            this.MANAGETEAMS = mteams.ToString().ToLower();
         }
     }
 }

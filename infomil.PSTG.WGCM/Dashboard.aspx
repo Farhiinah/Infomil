@@ -17,7 +17,7 @@
                     <div class="col-xl-9 col-lg-8  col-md-12">
                         <!-- Widget -->
                         <div class="row">
-                            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12">
+                            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12 userManagement">
                                 <div class="card dash-widget ctm-border-radius shadow-sm grow">
                                     <div class="card-body">
                                         <div class="card-icon bg-primary">
@@ -30,7 +30,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xl-3 col-lg-6 col-sm-6 col-12">
+                            <div class="col-xl-3 col-lg-6 col-sm-6 col-12 userManagement">
                                 <div class="card dash-widget ctm-border-radius shadow-sm grow">
                                     <div class="card-body">
                                         <div class="card-icon bg-warning">
@@ -51,13 +51,13 @@
                                             <i class="fa fa-suitcase" aria-hidden="true"></i>
                                         </div>
                                         <div class="card-right">
-                                            <h4 class="card-title">Absentees</h4>
-                                            <p class="card-text">3</p>
+                                            <h4 class="card-title">Total leave taken: </h4>
+                                            <p class="card-text" id="totalLeaveTaking">0</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xl-3 col-lg-6 col-sm-6 col-12 leaveManagement">
+                            <div class="col-xl-3 col-lg-6 col-sm-6 col-12 requestManagement">
                                 <div class="card dash-widget ctm-border-radius shadow-sm grow">
                                     <div class="card-body">
                                         <div class="card-icon bg-success">
@@ -65,7 +65,7 @@
                                         </div>
                                         <div class="card-right">
                                             <h4 class="card-title">Requests</h4>
-                                            <p class="card-text">10</p>
+                                            <p class="card-text" id="totalRequests">0</p>
                                         </div>
                                     </div>
                                 </div>
@@ -75,16 +75,6 @@
 
                         <!-- Chart -->
                         <div class="row">
-                            <!--div class="col-md-6 d-flex">
-                                <div class="card ctm-border-radius shadow-sm flex-fill grow">
-                                    <div class="card-header">
-                                        <h3 class="card-title mb-0">Employees' summary</h3>
-                                    </div>
-                                    <div class="card-body">
-                                        <canvas id="pieChart"></canvas>
-                                    </div>
-                                </div>
-                            </div-->
                             <div class="col-md-6 leaveManagement">
                                 <div class="card ctm-border-radius shadow-sm flex-fill grow">
                                     <div class="card-header">
@@ -95,12 +85,23 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-lg-6 col-md-12 leaveManagement">
+                                <!-- Today -->
+                                <div class="card flex-fill today-list shadow-sm grow">
+                                    <div class="card-header">
+                                        <h3 class="card-title mb-0 d-inline-block">Upcoming leaves</h3>
+                                        <a href="Leaves_Manager.aspx" class="d-inline-block float-right text-primary"><i class="customSuitCase fa fa-suitcase"></i></a>
+                                    </div>
+                                    <div class="card-body recent-activ" id="leavelistDashboard">
+                                        
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <!-- / Chart -->
 
                         <div class="row">
-                            <div class="col-lg-6 col-md-12 d-flex">
-
+                            <div class="col-lg-6 col-md-12 userManagement">
                                 <!-- Team Leads List -->
                                 <div class="card flex-fill team-lead shadow-sm grow">
                                     <div class="card-header">
@@ -108,32 +109,6 @@
                                         <a href="Employees.aspx" class="dash-card float-right mb-0 text-primary">Manage teams</a>
                                     </div>
                                     <div class="card-body" id="teamLeadListDashboard">
-                                        
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-6 col-md-12 leaveManagement">
-                                <!-- Today -->
-                                <div class="card flex-fill today-list shadow-sm grow">
-                                    <div class="card-header">
-                                        <h3 class="card-title mb-0 d-inline-block">Upcoming leaves</h3>
-                                        <a href="leave.html" class="d-inline-block float-right text-primary"><i class="customSuitCase fa fa-suitcase"></i></a>
-                                    </div>
-                                    <div class="card-body recent-activ">
-                                        <div class="recent-comment">
-                                            <a href="javascript:void(0)" class="dash-card text-danger">
-                                                <div class="dash-card-container">
-                                                    <div class="dash-card-icon">
-                                                        <i class="fa fa-suitcase"></i>
-                                                    </div>
-                                                    <div class="dash-card-content">
-                                                        <h4 class="mb-0">Mon, 16 Dec 2019</h4>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                            <hr>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -144,5 +119,6 @@
         </div>
         <!--/Content-->
     </div>
+    <script src="assets/js/DashboardManager.js"></script>
     <script defer type="text/javascript" src="assets/js/indexAdmin.js"></script>
 </asp:Content>
