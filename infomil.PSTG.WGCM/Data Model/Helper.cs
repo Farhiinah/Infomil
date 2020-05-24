@@ -165,34 +165,6 @@ namespace infomil.PSTG.WGCM.Data_Model
             return leavesls;
         }
 
-        public static bool DateOverlaps(DateTime sDate, DateTime eDate, string currentLeaveList)
-        {
-            bool isOverlapping = false;
-            ArrayList leaveList = GetLeavelist();
-            String[] userLeaveIdList = currentLeaveList.Split(';');
-            try
-            {
-                foreach (dynamic leave in leaveList)
-                {
-                    if (sDate < DateTime.ParseExact(leave["ENDDATE"], "dd/MM/yyyy", null) && DateTime.ParseExact(leave["STARTDATE"], "dd/MM/yyyy", null) < eDate)
-                    {
-                        foreach (string leaveId in userLeaveIdList)
-                        {
-                            if(leave["ID"] == leaveId)
-                            {
-                                isOverlapping = true;
-                            }
-                        }
-                    }
-                }
-            }
-            catch(Exception e)
-            {
-                Trace.TraceInformation(e.Message);
-            }
-            return isOverlapping;
-        }
-
         public static string AddXmlData(string db, string rootElement, string tableName, object obj)
         {
             string status = "OK";

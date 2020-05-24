@@ -11,38 +11,35 @@ class LeaveManager {
     if (this.CURRENTUSER.LEAVELIST.length > 0) {
       this.CURRENTUSER.LEAVELIST.forEach((leave) => {
         leaves.totalLeaves += parseInt(leave.LEAVEAMOUNT);
+        let approverMark = "";
+        if(leave.STATUS == "Approved") {
+          approverMark = this.USERLIST.find((user)=>{
+            return user.ID == leave.APPROVER;
+          }).LVLOFACCESS.ID  == "94d7b41571da4cccb3d0cb11cc620d69" ? "✔".fontcolor("#2979e7") : "⮙".fontcolor("#009e10");
+        }
+        if(leave.STATUS == "Escalated") {
+          approverMark = this.USERLIST.find((user)=>{
+            return user.ID == leave.APPROVER;
+          }).LVLOFACCESS.ID  == "94d7b41571da4cccb3d0cb11cc620d69" ? "⭡".fontcolor("#2979e7") : "⭡".fontcolor("#009e10");
+        }
+        if(leave.STATUS == "Rejected") {
+          approverMark = this.USERLIST.find((user)=>{
+            return user.ID == leave.APPROVER;
+          }).LVLOFACCESS.ID  == "94d7b41571da4cccb3d0cb11cc620d69" ? "⤬".fontcolor("#2979e7") : "⤬".fontcolor("#009e10");
+        }
         leaves.leaveList.push(`
-            <div class="col-md-6 col-lg-6 col-xl-4">
-            <div class="ctm-border-radius shadow-sm grow card">
-            <div class="card-header">
-            <h2 class="page-sub-title d-inline-block mb-0 mt-2">${capitalize(
-              leave.LEAVETYPE.replace("_", " ")
-            )}</h2>
-            <div class="team-action-icon float-right">
-            <h2 class="page-sub-title d-inline-block mb-0 mt-2">${
-              leave.LEAVEAMOUNT
-            }</h2>
-            </div>
-            </div>
-            <div class="card-body">
-            <div style="margin: 10px; color: rgba(0,0,0,0.5); border-bottom: 1px solid rgba(0,0,0,0.1)">
-            ${leave.STARTDATE + " - " + leave.ENDDATE}
-            <br/>
-            ${leave.COMMENT}
-            </div>
-            <br/>
-            <b style="color: ${
-              leave.STATUS == "Sent for approval"
-                ? "#f6822d"
-                : leave.STATUS == "Approved"
-                ? "#6a782c"
-                : leave.status == "Rejected"
-                ? "#ac2936"
-                : "black"
-            }">${leave.STATUS}</b>
-            </div>
-            </div>
-            </div>
+          <tr>
+          <td style="text-align: center;">${leave.STARTDATE}</td>
+          <td style="text-align: center;">${leave.ENDDATE}</td>
+          <td style="text-align: center;">${leave.SICK_LEAVE}</td>
+          <td style="text-align: center;">${leave.LOCAL_LEAVE}</td>
+          <td style="text-align: center;">${leave.ANNUAL_LEAVE}</td>
+          <td style="text-align: center;">${leave.UNPAID_LEAVE}</td>
+          <td style="text-align: center;">${leave.NUMBEROFHOURS}</td>
+          <td style="text-align: center;">${leave.COMMENT}</td>
+          <td style="text-align: center;">${leave.STATUS}</td>
+          <td style="text-align: center;">${approverMark}</td>
+          </tr>
           `);
       });
     }
@@ -63,6 +60,8 @@ class LeaveManager {
               }
               $(modalContainer).modal("hide");
               $(formName_NewLeave).trigger("reset");
+              $("#numOfDays").html(0);
+              $("#numOfHrs").html(0);
             })
             .catch((err) => {
               $.notify(err.message, "error");
@@ -73,66 +72,136 @@ class LeaveManager {
   }
   _leaveFx = {
     createLeave: () => {
-      let leaveData = {
-        LEAVETYPE: $(formInput_LeaveTypeContainer)
-          .children("option:selected")
-          .val(),
-        COMMENT: $(formInput_CommentContainer).val().trim(),
-        STATUS: "Sent for approval",
-        STARTDATE: $(formInput_StartDateContainer).val(),
-        ENDDATE: $(formInput_EndDateContainer).val(),
-        LEAVETAKING: 0,
-        LEAVEREMAINING: 0,
-        userId: this.CURRENTUSER.ID,
-      };
-      let leaveRemaining =
-        leaveData.LEAVETYPE != "LEAVEWITHOUTPAY"
-          ? this.CURRENTUSER[leaveData.LEAVETYPE]
-          : -1;
-      let startDate = new Date(
-        leaveData.STARTDATE.split("/")[2],
-        leaveData.STARTDATE.split("/")[1] - 1,
-        leaveData.STARTDATE.split("/")[0]
-      );
-      let endDate = new Date(
-        leaveData.ENDDATE.split("/")[2],
-        leaveData.ENDDATE.split("/")[1] - 1,
-        leaveData.ENDDATE.split("/")[0]
-      );
-      if (
-        startDate > new Date() &&
-        endDate > new Date() &&
-        endDate > startDate
-      ) {
-        leaveData.LEAVETAKING = this._leaveFx.dateDifference(
-          startDate,
-          endDate
-        );
-        if (leaveRemaining != 0) {
-          leaveData.LEAVEREMAINING = leaveRemaining - leaveData.LEAVETAKING;
-          this.CURRENTUSER[
-            leaveData.LEAVETYPE
-          ] = leaveData.LEAVEREMAINING.toString();
-          localStorage.setItem("CurrentUser", JSON.stringify(this.CURRENTUSER));
-        }
-        if (leaveRemaining == -1) {
-          leaveData.LEAVEREMAINING = 404;
-        }
-        if (leaveData.LEAVETAKING == 0) {
-          $.notify("Please select a valid period.", "error");
-        }
-        if (leaveData.LEAVEREMAINING <= 0) {
-          $.notify("Period exceeds available leave.", "error");
-        }
-        if (leaveData.LEAVETAKING > 0 && leaveData.LEAVEREMAINING >= 0) {
-          return this._utilFx.serverRequest(
-            "CreateLeave",
-            JSON.stringify(leaveData)
-          );
-        }
+      let totalLeaveCount = parseFloat($("#totalLeaveCount").val());
+      let sDate = $(formInput_StartDateContainer).val();
+      let eDate = $(formInput_EndDateContainer).val();
+
+      if (new Date(eDate) < new Date(sDate)) {
+        $.notify("Invalid period.", "error");
       } else {
-        $.notify("Please select a valid period.", "error");
+        console.log(this._leaveFx.dateOverlaps(sDate, eDate));
+        if (this._leaveFx.dateOverlaps(sDate, eDate)) {
+          $.notify("Date period overlaps with another.", "error");
+        } else {
+          if ($("#allDay").is(":checked")) {
+            if (
+              totalLeaveCount == parseFloat($("#numOfHrs").html()) &&
+              totalLeaveCount != 0
+            ) {
+              let SICKLEAVE =
+                $("#SICKLEAVE").val() == "" || $("#SICKLEAVE").val() == null
+                  ? 0
+                  : parseFloat($("#SICKLEAVE").val());
+              let LOCALEAVE =
+                $("#LOCALEAVE").val() == "" || $("#LOCALEAVE").val() == null
+                  ? 0
+                  : parseFloat($("#LOCALEAVE").val());
+              let ANNUALLEAVE =
+                $("#ANNUALLEAVE").val() == "" || $("#ANNUALLEAVE").val() == null
+                  ? 0
+                  : parseFloat($("#ANNUALLEAVE").val());
+              let UNPAIDLEAVE =
+                $("#UNPAIDLEAVE").val() == "" || $("#UNPAIDLEAVE").val() == null
+                  ? 0
+                  : parseFloat($("#UNPAIDLEAVE").val());
+              let leaveData = {
+                SICK_LEAVE: SICKLEAVE,
+                LOCAL_LEAVE: LOCALEAVE,
+                ANNUAL_LEAVE: ANNUALLEAVE,
+                UNPAID_LEAVE: UNPAIDLEAVE,
+                LEAVEAMOUNT: parseFloat($("#numOfDays").html()),
+                NUMOFHOURS: totalLeaveCount,
+                STATUS: "Sent for approval",
+                COMMENT: $("#comments").val(),
+                sDate: sDate.split("-").reverse().join("/"),
+                eDate: eDate.split("-").reverse().join("/"),
+                currentLeaveList: this._leaveFx.generateLeaveList(),
+                userId: this.CURRENTUSER.ID,
+              };
+              if (
+                this.CURRENTUSER.SICK_LEAVE == 0 ||
+                this.CURRENTUSER.SICK_LEAVE * 8 - leaveData.SICK_LEAVE < 0
+              ) {
+                $.notify("You do not have enough sick leaves.", "error");
+              } else if (
+                this.CURRENTUSER.LOCAL_LEAVE == 0 ||
+                this.CURRENTUSER.LOCAL_LEAVE * 8 - leaveData.LOCAL_LEAVE < 0
+              ) {
+                $.notify("You do not have enough local leaves.", "error");
+              } else if (
+                this.CURRENTUSER.ANNUAL_LEAVE == 0 ||
+                this.CURRENTUSER.ANNUAL_LEAVE * 8 - leaveData.ANNUAL_LEAVE < 0
+              ) {
+                $.notify("You do not have enough annual leaves.", "error");
+              } else {
+                leaveData.remainingSick =
+                  (this.CURRENTUSER.SICK_LEAVE * 8 - leaveData.SICK_LEAVE) / 8;
+                leaveData.remainingLocal =
+                  (this.CURRENTUSER.LOCAL_LEAVE * 8 - leaveData.LOCAL_LEAVE) /
+                  8;
+                leaveData.remainingAnnual =
+                  (this.CURRENTUSER.ANNUAL_LEAVE * 8 - leaveData.ANNUAL_LEAVE) /
+                  8;
+                return this._utilFx.serverRequest(
+                  "CreateLeave",
+                  JSON.stringify(leaveData)
+                );
+              }
+            } else {
+              $.notify(
+                "Incorrect leave input.",
+                "error"
+              );
+            }
+          }
+          else {
+
+          }
+        }
       }
+    },
+    dateOverlaps: (sDate, eDate) => {
+      let s = new Date(sDate);
+      let e = new Date(eDate);
+      let isOverlapping = false;
+      let count = 0;
+      if (this.CURRENTUSER.LEAVELIST.length > 0) {
+        this.CURRENTUSER.LEAVELIST.forEach((leave) => {
+          if (
+            s <=
+              new Date(
+                leave.ENDDATE.split("/")[2] +
+                  "-" +
+                  leave.ENDDATE.split("/")[1] +
+                  "-" +
+                  leave.ENDDATE.split("/")[0]
+              ) &&
+            new Date(
+              leave.STARTDATE.split("/")[2] +
+                "-" +
+                leave.STARTDATE.split("/")[1] +
+                "-" +
+                leave.STARTDATE.split("/")[0]
+            ) <= e
+          ) {
+            count++;
+          }
+        });
+      }
+      if(count > 0) {
+        isOverlapping = true;
+      }
+      return isOverlapping;
+    },
+    generateLeaveList: () => {
+      let leaveList = "";
+      this.CURRENTUSER.LEAVELIST.forEach((leave, index) => {
+        leaveList += leave.ID;
+        if (this.CURRENTUSER.LEAVELIST.length - 1 != index) {
+          leaveList += ";";
+        }
+      });
+      return leaveList;
     },
     dateDifference: (start, end) => {
       let s = new Date(+start);

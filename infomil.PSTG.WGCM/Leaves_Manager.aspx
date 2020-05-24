@@ -17,12 +17,10 @@
                         <div class="card-body">
                             <ul class="list-group list-group-horizontal-lg">
                                 <li class="tabItem list-group-item text-center active" onclick=""><a href="javascript:void(0)" class="text-white">Leaves</a></li>
-                                <li class="tabItem list-group-item text-center" onclick=""><a class="text-dark" href="javascript:void(0)">Calendar</a></li>
-
                             </ul>
                         </div>
                     </div>
-                    <div id="allEmp">
+                    <div id="allLeaves">
                         <div class="card shadow-sm grow ctm-border-radius">
                             <div class="card-body align-center">
                                 <h3 class="card-title float-left mb-0 mt-2"><span># of leaves: </span><span id="totalLeaves">0</span></h3>
@@ -36,28 +34,25 @@
                         <div class="ctm-border-radius shadow-sm grow card">
                             <div class="card-body">
                                 <!--Content tab-->
-                                <div id="leavesCardList" class="row people-grid-row">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="allTeams" style="display: none;">
-                        <div class="card shadow-sm grow ctm-border-radius">
-                            <div class="card-body align-center">
-                                <h3 class="card-title float-left mb-0 mt-2"><span># of teams: </span><span id="totalTeams">0</span></h3>
-                                <ul class="nav nav-tabs float-right border-0 tab-list-emp">
-                                    <li class="nav-item" data-toggle="modal" data-target="#newTeamsPopup">
-                                        <a class="nav-link active border-0 font-23 grid-view" href="javascript:void(0)"><i class="fa fa-plus" aria-hidden="true"></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="ctm-border-radius shadow-sm grow card">
-                            <div class="card-body">
-                                <!--Content tab-->
-                                <div id="teamsCardList" class="row people-grid-row">
-                                </div>
+                                <table id="leaveTable" class="display">
+                                    <thead>
+                                        <tr>
+                                            <th style="text-align: center;">From</th>
+                                            <th style="text-align: center;">To</th>
+                                            <th style="text-align: center;">Sick leave</th>
+                                            <th style="text-align: center;">Local leave</th>
+                                            <th style="text-align: center;">Annual leave</th>
+                                            <th style="text-align: center;">Unpaid leave</th>
+                                            <th style="text-align: center;">Total</th>
+                                            <th style="text-align: center;">Comments</th>
+                                            <th style="text-align: center;">Status</th>
+                                            <th style="text-align: center;">Approved</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="leavesCardList">
+                                        
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -69,7 +64,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2 class="modal-title">New Leave</h2>
+                    <h2 class="modal-title">New leave request</h2>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true" style="font-size: 1.5em;">&times;</span>
                     </button>
@@ -77,33 +72,62 @@
                 <form id="newUser">
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="exampleFormControlSelect1">Leave type</label>
-                            <br />
-                            <select class="form-control" id="leaveTypeList" style="width: 100%;" required>
-                                <option value="SICK_LEAVE">Sick leave</option>
-                                <option value="LOCAL_LEAVE">Local leave</option>
-                                <option value="ANNUAL_LEAVE">Annual leave</option>
-                                <option value="LEAVE_WITHOUTPAY">Leave without pay</option>
-                            </select>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label>Start date</label>
-                                    <input id="startDate" type="text" class="form-control datetimepicker" required>
+                            <label>I will be absent </label>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>from:</label>
+                                        <input id="startDate" type="date" class="form-control" required>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>to:</label>
+                                        <input id="endDate" type="date" class="form-control" required>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>
+                                            <input type="checkbox" data-toggle="toggle" id="allDay" checked onchange="calculateTotalAbsences()">
+                                            All day
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label>End date</label>
-                                    <input id="endDate" type="text" class="form-control datetimepicker" required>
+                            <label>Number of day(s): <span id="numOfDays">0</span> | Number of hour(s): <span id="numOfHrs">0</span></label>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label><u>Leave type</u></label>
+                                        <br />
+                                        <label>Sick leave</label>
+                                        <br />
+                                        <label>Local leave</label>
+                                        <br />
+                                        <label>Annual leave</label>
+                                        <br />
+                                        <label>Unpaid leave</label>
+                                        <br />
+                                        <label>Total</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label><u>Number of hour(s)</u></label>
+                                        <input id="SICKLEAVE" step="0.01" onkeyup="calculateTotalLeaves()" type="number" class="form-control" style="height: 25px; margin-bottom: 8px; width: 100px;">
+                                        <input id="LOCALEAVE" step="0.01" onkeyup="calculateTotalLeaves()" type="number" class="form-control" style="height: 25px; margin-bottom: 8px; width: 100px;">
+                                        <input id="ANNUALLEAVE" step="0.01" onkeyup="calculateTotalLeaves()" type="number" class="form-control" style="height: 25px; margin-bottom: 8px; width: 100px;">
+                                        <input id="UNPAIDLEAVE" step="0.01" onkeyup="calculateTotalLeaves()" type="number" class="form-control" style="height: 25px; margin-bottom: 8px; width: 100px;">
+                                        <input id="totalLeaveCount" type="number" value="0.0" class="form-control" style="height: 25px; width: 100px;" disabled>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleFormControlSelect1">Comment</label>
-                            <br />
-                            <textarea id="comments" class="form-control" rows="4"></textarea>
+                            <div class="form-group">
+                                <label for="exampleFormControlSelect1">Comments (If any)</label>
+                                <br />
+                                <textarea id="comments" class="form-control" rows="4"></textarea>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -118,4 +142,8 @@
 
     <script src="assets/js/LeaveManager.js"></script>
     <script type="text/javascript" src="assets/js/leave.js"></script>
+    <script>
+        document.getElementById("startDate").min = formatDate(new Date());
+        document.getElementById("endDate").min = formatDate(new Date());
+    </script>
 </asp:Content>

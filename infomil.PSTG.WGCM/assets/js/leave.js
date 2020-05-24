@@ -5,7 +5,6 @@ const formName_NewLeave = "#newUser";
 const formInput_LeaveTypeContainer = "#leaveTypeList";
 const formInput_StartDateContainer = "#startDate";
 const formInput_EndDateContainer = "#endDate";
-const formInput_CommentContainer = "#comments";
 
 let listenersLoaded = false;
 
@@ -30,8 +29,9 @@ let leaveLoadData = () => {
       app.renderList(
         leavesListContainer,
         leaveConstruct.leaveList,
-        "No leave to display."
+        null
       );
+      $('#leaveTable').DataTable(); 
 
       !listenersLoaded ? initListners(app, leaveManager) : app.endLoad();
     })
@@ -49,6 +49,20 @@ function initListners(app, leaveManager) {
       params: leaveManager,
       preventDefaultEvent: true,
     },
+    {
+      dom: formInput_StartDateContainer,
+      eventType: "change",
+      action: "calculateTotalAbsences",
+      params: "sDate",
+      preventDefaultEvent: false,
+    },
+
+    {
+      dom: formInput_EndDateContainer,
+      eventType: "change",
+      action: "calculateTotalAbsences",
+      preventDefaultEvent: false,
+    },
   ];
   formInputListeners.forEach((formInput) => {
     app.addListener(
@@ -65,4 +79,101 @@ function initListners(app, leaveManager) {
 
 function createLeave(controller) {
   controller.leaveOp("create");
+}
+
+function calculateTotalAbsences(mod) {
+  let sDate = $(formInput_StartDateContainer).val();
+  if(mod == "sDate") {
+    $(formInput_EndDateContainer).val(sDate);
+  }
+  let eDate = $(formInput_EndDateContainer).val();
+  let isWeekEndResult = isWeekend(sDate, eDate);
+  let totalDays = 0;
+  let totalHrs = 0;
+
+  if (sDate != "" && eDate != "") {
+    const diffTime = Math.abs(new Date(eDate) - new Date(sDate));
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+    totalDays = diffDays;
+    if (isWeekEndResult.isWeekend) {
+      totalDays -= isWeekEndResult.count;
+    }
+    totalHrs = totalDays * 8;
+    if (new Date(eDate) < new Date(sDate)) {
+      $.notify("Invalid period.", "error");
+      $("#numOfDays").html(0);
+      $("#numOfHrs").html(0);
+    }
+    else {
+      $("#numOfDays").html(totalDays);
+      if (!$("#allDay").is(":checked")) {
+        $("#numOfHrs").html("Min: 0.25, Max: 8 per day.");
+      } else {
+        $("#numOfHrs").html(totalHrs);
+      }
+    }
+  } else {
+    $("#numOfDays").html(0);
+    $("#numOfHrs").html(0);
+  }
+}
+
+function calculateTotalLeaves() {
+  let SICKLEAVE =
+    $("#SICKLEAVE").val() == "" || $("#SICKLEAVE").val() == null
+      ? 0
+      : parseFloat($("#SICKLEAVE").val());
+  let LOCALEAVE =
+    $("#LOCALEAVE").val() == "" || $("#LOCALEAVE").val() == null
+      ? 0
+      : parseFloat($("#LOCALEAVE").val());
+  let ANNUALLEAVE =
+    $("#ANNUALLEAVE").val() == "" || $("#ANNUALLEAVE").val() == null
+      ? 0
+      : parseFloat($("#ANNUALLEAVE").val());
+  let UNPAIDLEAVE =
+    $("#UNPAIDLEAVE").val() == "" || $("#UNPAIDLEAVE").val() == null
+      ? 0
+      : parseFloat($("#UNPAIDLEAVE").val());
+  if (SICKLEAVE > 0 || LOCALEAVE > 0 || ANNUALLEAVE > 0 || UNPAIDLEAVE > 0) {
+    $("#totalLeaveCount").val(
+      SICKLEAVE + LOCALEAVE + ANNUALLEAVE + UNPAIDLEAVE
+    );
+  } else {
+    $("#totalLeaveCount").val(0.0);
+  }
+}
+
+function isWeekend(date1, date2) {
+  var d1 = new Date(date1),
+    d2 = new Date(date2),
+    isWeekend = false;
+
+  var result = { isWeekend: false, count: 0 };
+  var count = 0;
+
+  while (d1 <= d2) {
+    var day = d1.getDay();
+    isWeekend = day === 6 || day === 0;
+    if (isWeekend) {
+      result.isWeekend = true;
+      count += 1;
+    }
+    d1.setDate(d1.getDate() + 1);
+  }
+  result.count = count;
+
+  return result;
+}
+
+function formatDate(date) {
+  var d = new Date(date),
+    month = "" + (d.getMonth() + 1),
+    day = "" + d.getDate(),
+    year = d.getFullYear();
+
+  if (month.length < 2) month = "0" + month;
+  if (day.length < 2) day = "0" + day;
+
+  return [year, month, day].join("-");
 }

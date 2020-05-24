@@ -129,6 +129,9 @@ class App {
       if (user.ID == team.LEAD) {
         team.LEAD = user;
       }
+      if(user.ID == team.TEAMMANAGER) {
+        team.TEAMMANAGER = user;
+      }
       let currentTeamMembers = team.MEMBERS;
       currentTeamMembers.split(";").forEach((teamMember) => {
         if (teamMember == user.ID) {
@@ -234,9 +237,18 @@ class App {
         $(domContainer).append(item);
       });
     } else {
-      $(domContainer).html(
-        `<div style="width: 80%; margin: 0 auto;"><p style="text-align: center;">${emptyMessage}</p></div>`
-      );
+      if($(domContainer).is('select')) {
+        $(domContainer).html(
+          `<option value="">${emptyMessage}</div>`
+        );
+      }
+      else {
+        if(emptyMessage != null) {
+          $(domContainer).html(
+            `<div style="width: 80%; margin: 0 auto;"><p style="text-align: center;">${emptyMessage}</p></div>`
+          );
+        }
+      }
     }
   }
   addListener(domContainer, listener, action, params, preventDefault) {

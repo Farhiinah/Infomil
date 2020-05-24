@@ -69,10 +69,7 @@ class EmployeeManager {
           <div class="card-header">
           <h2 class="page-sub-title d-inline-block mb-0 mt-2">${team.NAME}</h2>
           <div class="team-action-icon float-right">
-          <span data-toggle="modal" data-target="#edit">
-          <a href="javascript:void(0)" class="btn btn-theme text-white" title="Edit" style="font-size: 1em; border-radius: 100%; width: 35px; height: 35px;"><i class="fa fa-pencil"></i></a>
-          </span>
-          <span data-toggle="modal" data-target="#delete">
+          <span  onclick="new EmployeeManager().teamOp('delete', '${team.ID}')">
           <a href="javascript:void(0)" class="btn btn-theme text-white" title="Delete" style="font-size: 1em; border-radius: 100%; width: 35px; height: 35px;"><i class="fa fa-trash"></i></a>
           </span>
           </div>
@@ -82,7 +79,8 @@ class EmployeeManager {
           ${teamMemberlist}
           </div>
           <br/>
-          <b>${team.LEAD.FIRSTNAME + " " + team.LEAD.LASTNAME}</b>
+          Team lead: ${team.LEAD.FIRSTNAME + " " + team.LEAD.LASTNAME} <br/>
+          Team manager: ${team.TEAMMANAGER.FIRSTNAME + " " + team.TEAMMANAGER.LASTNAME}
           </div>
           </div>
           </div>
@@ -113,6 +111,7 @@ class EmployeeManager {
     return {
       teamLeadDropdown: this._buildTeamFormFx.buildTeamLeadDropdown(),
       teamMemberDropdown: this._buildTeamFormFx.buildMemberDropdown(),
+      teamManagerDropdown: this._buildTeamFormFx.buildManagerDropdown(),
     };
   }
   _buildTeamFormFx = {
@@ -129,6 +128,20 @@ class EmployeeManager {
         }
       });
       return teamLeadData;
+    },
+    buildManagerDropdown: () => {
+      let managerData = [];
+      this.USERLIST.forEach((user) => {
+        let currentUserAccess = user.LVLOFACCESS.NAME;
+        if (currentUserAccess == "Manager" && user.ACTIVE) {
+          managerData.push(`
+            <option value="${user.ID}">${
+            user.FIRSTNAME + " " + user.LASTNAME
+          }</option>
+          `);
+        }
+      });
+      return managerData;
     },
     buildMemberDropdown: () => {
       let teamMemberData = [];
@@ -262,7 +275,7 @@ class EmployeeManager {
         fileExtension: formData.extension,
         SICKLEAVE: $(formInput_SickLeaveContainer).val(),
         LOCALLEAVE: $(formInput_LocalLeaveContainer).val(),
-        ANNUALLEAVE: $(formInput_AnnualLeaveContainer).val()
+        ANNUALLEAVE: $(formInput_AnnualLeaveContainer).val(),
       };
       return this._utilFx.serverRequest("CreateUser", JSON.stringify(userData));
     },
@@ -286,6 +299,33 @@ class EmployeeManager {
             $.notify(err.message, "error");
           });
         break;
+      case "delete":
+        this._utilFx
+          .confirm(
+            "Are you sure you want to delete this team?",
+            "Delete team"
+          )
+          .then((choice) => {
+            if (choice) {
+              this._utilFx
+                .serverRequest("DeleteTeam", `{ID: '${uid}'}`)
+                .then((result) => {
+                  if (result.status == 200) {
+                    $.notify("Team " + mod + "d.", "success");
+                    employeeLoadData();
+                  } else {
+                    $.notify("An error occured: " + result.message, "error");
+                  }
+                })
+                .catch((err) => {
+                  $.notify(err.message, "error");
+                });
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+        break;
     }
   }
   _teamOpfx = {
@@ -306,12 +346,15 @@ class EmployeeManager {
         TEAMLEAD: $(formInput_TeamLeadListContainer)
           .children("option:selected")
           .val(),
+        TEAMMANAGER: $(formInput_TeamManagerListContainer)
+          .children("option:selected")
+          .val(),
         TEAMMEMBERS: teamMembersFinal,
       };
       return this._utilFx.serverRequest("CreateTeam", JSON.stringify(teamData));
     },
   };
-  
+
   _utilFx = {
     confirm: (message, title) => {
       return new Promise((resolve, reject) => {

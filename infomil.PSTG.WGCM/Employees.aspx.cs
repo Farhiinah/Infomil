@@ -76,14 +76,14 @@ namespace infomil.PSTG.WGCM
         }
 
         [WebMethod]
-        public static string CreateTeam(string TEAMNAME, string TEAMLEAD, string TEAMMEMBERS)
+        public static string CreateTeam(string TEAMNAME, string TEAMLEAD, string TEAMMANAGER, string TEAMMEMBERS)
         {
             string result = "OK";
             try
             {
                 if (!Helper.TeamExist(TEAMNAME))
                 {
-                    Helper.AddXmlData(SiteMaster.teamDB, "teamList", "team", new Team(TEAMNAME, TEAMLEAD, TEAMMEMBERS));
+                    Helper.AddXmlData(SiteMaster.teamDB, "teamList", "team", new Team(TEAMNAME, TEAMLEAD, TEAMMANAGER, TEAMMEMBERS));
                 }
                 else
                 {
@@ -95,6 +95,12 @@ namespace infomil.PSTG.WGCM
                 result = e.Message;
             }
             return result;
+        }
+
+        [WebMethod]
+        public static string DeleteTeam(string ID)
+        {
+            return Helper.DelXmlData(ID, SiteMaster.teamDB, "teamList", "team");
         }
     }
 }

@@ -112,25 +112,25 @@
                             </select>
                         </div>
                         
-                        <div class="input-group mb-3">
+                        <div class="input-group mb-3 leaveInput" style="display: none;">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" style="font-size: 1em;"><i class="fa fa-suitcase" aria-hidden="true"></i></span>
                             </div>
-                            <input type="number" class="form-control" placeholder="Sick leave" id="sickLeave" required>
+                            <input type="number" class="form-control" placeholder="Sick leave" id="sickLeave">
                         </div>
                         
-                        <div class="input-group mb-3">
+                        <div class="input-group mb-3 leaveInput" style="display: none;">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" style="font-size: 1em;"><i class="fa fa-suitcase" aria-hidden="true"></i></span>
                             </div>
-                            <input type="number" class="form-control" placeholder="Local leave" id="localLeave" required>
+                            <input type="number" class="form-control" placeholder="Local leave" id="localLeave">
                         </div>
                         
-                        <div class="input-group mb-3">
+                        <div class="input-group mb-3 leaveInput" style="display: none;">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" style="font-size: 1em;"><i class="fa fa-suitcase" aria-hidden="true"></i></span>
                             </div>
-                            <input type="number" class="form-control" placeholder="Annual leave" id="annualLeave" required>
+                            <input type="number" class="form-control" placeholder="Annual leave" id="annualLeave">
                         </div>
 
                         <div class="form-group">
@@ -161,11 +161,15 @@
                             <input id="teamName" type="text" class="form-control" placeholder="Team name" required>
                         </div>
                         <div class="form-group">
+                            <label for="exampleFormControlSelect1">Manager</label>
+                            <select class="form-control" id="teamManagerList" required>
+                            </select>
+                        </div>
+                        <div class="form-group">
                             <label for="exampleFormControlSelect1">Team lead</label>
                             <select class="form-control" id="teamLeadList" required>
                             </select>
                         </div>
-
                         <div class="form-group">
                             <label for="exampleFormControlSelect1">Team members</label>
                             <br />
@@ -175,7 +179,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-dismiss="modal" style="font-size: 1em;">Cancel</button>
-                        <button type="submit" class="btn btn-primary" style="font-size: 1em;">Save</button>
+                        <button type="submit" class="btn btn-primary" style="font-size: 1em;" id="save">Save</button>
                     </div>
                 </form>
             </div>

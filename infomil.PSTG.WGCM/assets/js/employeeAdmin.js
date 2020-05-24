@@ -21,8 +21,12 @@ const teamCountContainer = "#totalTeams";
 const newTeamModalContainer = "#newTeamsPopup";
 const formName_NewTeam = "#newTeam";
 const formInput_TeamName = "#teamName";
+const formInput_TeamManagerListContainer = "#teamManagerList";
 const formInput_TeamLeadListContainer = "#teamLeadList";
 const formInput_TeamMemberListContainer = "#employeeList";
+const fomrInput_leaveInputContainer = ".leaveInput";
+const formInput_saveBtn = "#save";
+const formInput_updateBtn = "#update";
 
 let listenersLoaded = false;
 let formData = { image: null, extension: null };
@@ -68,6 +72,12 @@ let employeeLoadData = () => {
         formInput_TeamLeadListContainer,
         newTeamFormConstruct.teamLeadDropdown,
         "No team lead available."
+      );
+
+      app.renderList(
+        formInput_TeamManagerListContainer,
+        newTeamFormConstruct.teamManagerDropdown,
+        "No manager available."
       );
 
       let teamMemberData = newTeamFormConstruct.teamMemberDropdown;
@@ -117,6 +127,13 @@ function initListners(app, employeeManager) {
       action: "createUser",
       params: employeeManager,
       preventDefaultEvent: true,
+    },
+    {
+      dom: formInput_AccessLevelDropdownContainer,
+      eventType: "change",
+      action: "toggleLeaveInput",
+      params: formInput_AccessLevelDropdownContainer,
+      preventDefaultEvent: false,
     },
     {
       dom: formName_NewTeam,
@@ -193,5 +210,20 @@ function changeTab(tab) {
   if (tab == "Teams") {
     $(teamsTabContainer).show("slow");
     $(employeesTabContainer).hide("fast");
+  }
+}
+
+function toggleLeaveInput(input) {
+  if($(input).children("option:selected").val() != "87e096fd6d7a4e19ae4135b39e485b07"){
+    $(fomrInput_leaveInputContainer).each(function () {
+      $(this).show();
+      $(this).find('input').prop('required', true);
+    });
+  }
+  else {
+    $(fomrInput_leaveInputContainer).each(function () {
+      $(this).hide();
+      $(this).find('input').prop('required', false);
+    });
   }
 }

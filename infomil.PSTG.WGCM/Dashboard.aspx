@@ -51,7 +51,7 @@
                                             <i class="fa fa-suitcase" aria-hidden="true"></i>
                                         </div>
                                         <div class="card-right">
-                                            <h4 class="card-title">Total leave taken: </h4>
+                                            <h4 class="card-title">Total leave taken</h4>
                                             <p class="card-text" id="totalLeaveTaking">0</p>
                                         </div>
                                     </div>
@@ -71,6 +71,49 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="row">
+                            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12 leaveManagement">
+                                <div class="card dash-widget ctm-border-radius shadow-sm grow">
+                                    <div class="card-body">
+                                        <div class="card-icon bg-primary">
+                                            <i class="fa fa-suitcase" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="card-right">
+                                            <h4 class="card-title">My sick leave</h4>
+                                            <p class="card-text" id="totalSick">0</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-6 col-sm-6 col-12 leaveManagement">
+                                <div class="card dash-widget ctm-border-radius shadow-sm grow">
+                                    <div class="card-body">
+                                        <div class="card-icon bg-warning">
+                                            <i class="fa fa-suitcase"></i>
+                                        </div>
+                                        <div class="card-right">
+                                            <h4 class="card-title">My Local leave</h4>
+
+                                            <p class="card-text" id="totalLocal">0</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-6 col-sm-6 col-12 leaveManagement">
+                                <div class="card dash-widget ctm-border-radius shadow-sm grow">
+                                    <div class="card-body">
+                                        <div class="card-icon bg-danger">
+                                            <i class="fa fa-suitcase" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="card-right">
+                                            <h4 class="card-title">My annual leave</h4>
+                                            <p class="card-text" id="totalAnnual">0</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <!-- / Widget -->
 
                         <!-- Chart -->
@@ -81,7 +124,7 @@
                                         <h3 class="card-title mb-0">Leaves' summary</h3>
                                     </div>
                                     <div class="card-body">
-                                        <canvas id="PieChart"></canvas>
+                                        <canvas id="pieChart"></canvas>
                                     </div>
                                 </div>
                             </div>

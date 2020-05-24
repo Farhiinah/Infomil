@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <accessLevel>
+        <access ID="87e096fd6d7a4e19ae4135b39e485b07" NAME="Admin" MANAGEUSER="true" MANAGELEAVES="false" MANAGEACCESS="true" VIEWREPORTS="true" ISAPPROVER="false"/>
+        <access ID="678af57675744c22a9b47c11eced0aa8" NAME="Standard user" MANAGEUSER="false" MANAGELEAVES="true" MANAGEACCESS="false" VIEWREPORTS="false" ISAPPROVER="false"/>
+        <access ID="94d7b41571da4cccb3d0cb11cc620d69" NAME="Team lead" MANAGEUSER="false" MANAGELEAVES="true" MANAGEACCESS="false" VIEWREPORTS="true" ISAPPROVER="true"/>
+        <access ID="5a56dcc19d924247b5d1f1284a3505b5" NAME="Manager" MANAGEUSER="true" MANAGELEAVES="true" MANAGEACCESS="false" VIEWREPORTS="true" ISAPPROVER="true"/>
+    </accessLevel>
+    <leaveList>
+    </leaveList>
+    <teamList>
+        <team ID="8fb444ddea6541ee87c1ceada8ecf57e" NAME="Php" LEAD="181627b135d94eda8e5b87b276747bfa" TEAMMANAGER="3a421d48a5e340beb83d03492eb6838e" MEMBERS="4dac4e499afa4f448b4ba64b4775c07d" />
+    </teamList>
+    <userList>
+        <user ID="7af37aac98ce4ed6966f5ff4d678baaf" FIRSTNAME="Farhiinah" LASTNAME="Toofany" USERNAME="ft1234" INITIALS="ft" EMAIL="ft`gmail.com" PASSWORD="1234" LVLOFACCESS="87e096fd6d7a4e19ae4135b39e485b07" ACTIVE="true" PROFILEPIC="assets/img/profiles/profilePic_ft1234.jpg" SICK_LEAVE="" LOCAL_LEAVE="" ANNUAL_LEAVE="" LEAVELIST="" />
+        <user ID="4dac4e499afa4f448b4ba64b4775c07d" FIRSTNAME="John" LASTNAME="Doe" USERNAME="jd156748" EMAIL="jd`mail.com" INITIALS="jd" PASSWORD="1234" LVLOFACCESS="678af57675744c22a9b47c11eced0aa8" ACTIVE="true" PROFILEPIC="assets/img/profiles/img-6.jpg" SICK_LEAVE="15" LOCAL_LEAVE="10" ANNUAL_LEAVE="10" LEAVELIST="" />
+        <user ID="181627b135d94eda8e5b87b276747bfa" FIRSTNAME="Jane" LASTNAME="Doe" USERNAME="jd192968" EMAIL="0295rid1`gmail.com" INITIALS="jd" PASSWORD="1234" LVLOFACCESS="94d7b41571da4cccb3d0cb11cc620d69" ACTIVE="true" PROFILEPIC="assets/img/profiles/img-6.jpg" SICK_LEAVE="15" LOCAL_LEAVE="22" ANNUAL_LEAVE="10" LEAVELIST="" />
+        <user ID="44e305f3faed4a7991f6b7b792a488fb" FIRSTNAME="Admin" LASTNAME="Admin" USERNAME="aa313911" EMAIL="admin`mail.com" INITIALS="aa" PASSWORD="1234" LVLOFACCESS="87e096fd6d7a4e19ae4135b39e485b07" ACTIVE="true" PROFILEPIC="assets/img/profiles/img-6.jpg" SICKLEAVE="" LOCALLEAVE="" ANNUALLEAVE="" LEAVELIST="" />
+        <user ID="3a421d48a5e340beb83d03492eb6838e" FIRSTNAME="Team" LASTNAME="Manager" USERNAME="tm237629" EMAIL="tm`mail.com" INITIALS="tm" PASSWORD="1234" LVLOFACCESS="5a56dcc19d924247b5d1f1284a3505b5" ACTIVE="true" PROFILEPIC="assets/img/profiles/img-6.jpg" SICKLEAVE="15" LOCALLEAVE="25" ANNUALLEAVE="20" LEAVELIST="" />
+        <user ID="fd6ba01e3e9e4eafb344e9c8de349a4d" FIRSTNAME="Teamlead" LASTNAME="Test" USERNAME="tt544083" EMAIL="tt`mail.com" INITIALS="tt" PASSWORD="1234" LVLOFACCESS="94d7b41571da4cccb3d0cb11cc620d69" ACTIVE="true" PROFILEPIC="assets/img/profiles/img-6.jpg" SICKLEAVE="10" LOCALLEAVE="15" ANNUALLEAVE="25" LEAVELIST="" />
+        <user ID="176a8d6df0c44c939622f11d522381d6" FIRSTNAME="Team" LASTNAME="Manager 2" USERNAME="tm750293" EMAIL="tm`email.com" INITIALS="tm" PASSWORD="1234" LVLOFACCESS="5a56dcc19d924247b5d1f1284a3505b5" ACTIVE="true" PROFILEPIC="assets/img/profiles/img-6.jpg" SICKLEAVE="20" LOCALLEAVE="20" ANNUALLEAVE="20" LEAVELIST="" />
+    </userList>
+</root>

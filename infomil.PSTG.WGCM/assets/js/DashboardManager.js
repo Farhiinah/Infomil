@@ -28,7 +28,7 @@ class DashboardManager {
     return teamLeadList;
   }
   buildLeaveList() {
-    let leaves = {totalLeaves:0, leaveList: []};
+    let leaves = {totalLeaves:0, leaveList: [], totalLeaveRemaining:0};
     if (this.CURRENTUSER.LEAVELIST.length > 0) {
         this.CURRENTUSER.LEAVELIST.forEach((leave) => {
           leaves.totalLeaves += parseInt(leave.LEAVEAMOUNT);
@@ -39,7 +39,7 @@ class DashboardManager {
             <i class="fa fa-suitcase"></i>
             </div>
             <div class="dash-card-content">
-            <h4 class="mb-0">${capitalize(leave.LEAVETYPE.replace("_", " ")) + " : " + leave.STARTDATE + " - " + leave.ENDDATE}</h4>
+            <h4 class="mb-0"> ${leave.STARTDATE + " - " + leave.ENDDATE +  " | " + leave.NUMBEROFHOURS + "hr(s). | " + leave.STATUS}</h4>
             </div>
             </div>
             <hr>
@@ -47,6 +47,9 @@ class DashboardManager {
           `);
         });
       }
+      leaves.totalLeaveRemaining = parseInt(this.CURRENTUSER.SICK_LEAVE) +
+      parseInt(this.CURRENTUSER.LOCAL_LEAVE) +
+      parseInt(this.CURRENTUSER.ANNUAL_LEAVE);
     return leaves;
   }
   buildRequestList() {

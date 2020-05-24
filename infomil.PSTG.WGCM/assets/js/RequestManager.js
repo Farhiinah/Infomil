@@ -11,7 +11,7 @@ class RequestManager {
     if (this.LEAVELIST.length > 0) {
       let currentTeam = null;
       this.TEAMLIST.forEach((team) => {
-        if (team.LEAD.ID == this.CURRENTUSER.ID) {
+        if (team.LEAD.ID == this.CURRENTUSER.ID || team.TEAMMANAGER.ID == this.CURRENTUSER.ID) {
           currentTeam = team;
         }
       });
@@ -21,27 +21,38 @@ class RequestManager {
             user.LEAVELIST.forEach((leave) => {
               if (leave.STATUS == "Sent for approval") {
                 requests.push(`
-                    <div class="col-md-6 col-lg-6 col-xl-4">
-                    <div class="ctm-border-radius shadow-sm grow card">
-                    <div class="card-header">
-                    <h3 class="page-sub-title d-inline-block mb-0 mt-2">${user.FIRSTNAME + " " + user.LASTNAME}</h3>
-                    </div>
-                    <div class="card-body">
-                    <div style="margin: 10px; color: rgba(0,0,0,0.5); border-bottom: 1px solid rgba(0,0,0,0.1)">
-                    ${capitalize(leave.LEAVETYPE.replace("_", " "))}
-                    <br />
-                    ${leave.STARTDATE + " " + leave.ENDDATE} (${leave.LEAVEAMOUNT})
-                    <br />
-                    ${leave.COMMENT}
-                    </div>
-                    <br />
-                    <div class="btn-group col-xs-1 text-center" role="group" aria-label="Basic example" style="width: 100%; top: 10px; font-size: 1em; margin-bottom: 5px;">
-                    <button type="button" class="btn btn-success" onclick="">Approve</button>
-                    <button type="button" class="btn btn-danger" onclick="">Reject</button>
-                    </div>
-                    </div>
-                    </div>
-                    </div>
+                  <tr>
+                  <td class="selectAreaRequest" data="${leave.ID}" style="text-align: center;">
+                  <input type="checkbox" onchange="checkToggleCherryPick(this, '${leave.ID}')">
+                  </td>
+                  <td style="text-align: center;">${user.FIRSTNAME + " " + user.LASTNAME}</td>
+                  <td style="text-align: center;">${leave.STARTDATE}</td>
+                  <td style="text-align: center;">${leave.ENDDATE}</td>
+                  <td style="text-align: center;">${leave.SICK_LEAVE}</td>
+                  <td style="text-align: center;">${leave.LOCAL_LEAVE}</td>
+                  <td style="text-align: center;">${leave.ANNUAL_LEAVE}</td>
+                  <td style="text-align: center;">${leave.UNPAID_LEAVE}</td>
+                  <td style="text-align: center;">${leave.NUMBEROFHOURS}</td>
+                  <td style="text-align: center;">${leave.COMMENT}</td>
+                  </tr>
+                `);
+              }
+              if (this.CURRENTUSER.LVLOFACCESS.ID == "5a56dcc19d924247b5d1f1284a3505b5" && leave.STATUS == "Escalated") {
+                requests.push(`
+                  <tr>
+                  <td class="selectAreaRequest" data="${leave.ID}" style="text-align: center;">
+                  <input type="checkbox" onchange="checkToggleCherryPick(this, '${leave.ID}')">
+                  </td>
+                  <td style="text-align: center;">${user.FIRSTNAME + " " + user.LASTNAME}</td>
+                  <td style="text-align: center;">${leave.STARTDATE}</td>
+                  <td style="text-align: center;">${leave.ENDDATE}</td>
+                  <td style="text-align: center;">${leave.SICK_LEAVE}</td>
+                  <td style="text-align: center;">${leave.LOCAL_LEAVE}</td>
+                  <td style="text-align: center;">${leave.ANNUAL_LEAVE}</td>
+                  <td style="text-align: center;">${leave.UNPAID_LEAVE}</td>
+                  <td style="text-align: center;">${leave.NUMBEROFHOURS}</td>
+                  <td style="text-align: center;">${leave.COMMENT}</td>
+                  </tr>
                 `);
               }
             });
@@ -51,4 +62,92 @@ class RequestManager {
     }
     return requests;
   }
+  requestMod(mod, idList) {
+    let IDLIST = "";
+    idList.forEach((val, index) => {
+      IDLIST += val;
+      if(index != idList.length - 1) {
+        IDLIST += ";";
+      }
+    });
+    switch(mod) {
+      case "approve": 
+      this._utilFx.serverRequest("ApproveLeave", `{IDLIST: '${IDLIST}', approverId: '${this.CURRENTUSER.ID}'}`).then((result)=>{
+        if(result.status == 200) {
+          $.notify("Request " + mod + "d.", "success");
+          location.reload();
+        }
+        else {
+          $.notify("Server error: " + result.message, "error");
+        }
+      }).catch((err)=>{
+        $.notify("Error: " + err, "error");
+      });
+      break;
+      case "escalate": 
+      this._utilFx.confirm("Are you sure you want to escalate the selected request?", "Escalate request")
+        .then((response) => {
+          if(response) {
+            this._utilFx.serverRequest("EscalateLeave", `{IDLIST: '${IDLIST}', approverId: '${this.CURRENTUSER.ID}'}`).then((result)=>{
+              if(result.status == 200) {
+                $.notify("Request " + mod + "d.", "success");
+                location.reload();
+              }
+              else {
+                $.notify("Server error: " + result.message, "error");
+              }
+            }).catch((err)=>{
+              $.notify("Error: " + err, "error");
+            });
+          }
+        }).catch((response) => {
+          console.log(response);
+        });
+      break;
+      case "reject": 
+        this._utilFx.confirm("Are you sure you want to reject the selected request?", "Reject request")
+        .then((response) => {
+          if(response) {
+            this._utilFx.serverRequest("RejectLeave", `{IDLIST: '${IDLIST}', approverId: '${this.CURRENTUSER.ID}'}`).then((result)=>{
+              if(result.status == 200) {
+                $.notify("Request " + mod + "d.", "success");
+                location.reload();
+              }
+              else {
+                $.notify("Server error: " + result.message, "error");
+              }
+            }).catch((err)=>{
+              $.notify("Error: " + err, "error");
+            });
+          }
+        }).catch((response) => {
+          console.log(response);
+        });
+      break;
+    }
+  }
+  _utilFx = {
+    confirm: (message, title) => {
+      return new Promise((resolve, reject) => {
+        bootpopup.confirm(message, title, function (ans) {
+          if (ans) {
+            resolve(true);
+          } else {
+            reject(false);
+          }
+        });
+      });
+    },
+    serverRequest: (action, data) => {
+      return new Promise((resolve, reject) => {
+        makeAjaxReq("Requests_Manager.aspx/" + action, data).then((response) => {
+          if (response.d == "OK") {
+            resolve({ status: 200, message: "OK" });
+          } else {
+            reject({ status: 500, message: "Server error: " + response.d });
+          }
+        });
+      });
+    },
+  };
 }

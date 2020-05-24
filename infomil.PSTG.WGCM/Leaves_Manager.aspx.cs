@@ -15,38 +15,31 @@ namespace infomil.PSTG.WGCM
         }
 
         [WebMethod]
-        public static string CreateLeave(string userId, string LEAVETYPE, string COMMENT,
-            string STATUS, string STARTDATE, string ENDDATE, string LEAVETAKING, string LEAVEREMAINING)
+        public static string CreateLeave(string userId, string sDate, string eDate,
+            string STATUS, string COMMENT, string NUMOFHOURS, string LEAVEAMOUNT, string UNPAID_LEAVE, string ANNUAL_LEAVE, 
+            string LOCAL_LEAVE, string SICK_LEAVE, string remainingSick, string remainingLocal, string remainingAnnual, string currentLeaveList)
         {
             string result = "OK";
             try
             {
-                if (Convert.ToInt32(LEAVEREMAINING) > 0)
+                Leaves myLeave = new Leaves(sDate, eDate, LEAVEAMOUNT, NUMOFHOURS, SICK_LEAVE, 
+                                            LOCAL_LEAVE, ANNUAL_LEAVE, UNPAID_LEAVE, COMMENT, STATUS
+                                           );
+                string leaveStatus = Helper.AddXmlData(SiteMaster.leaveDB, "leaveList", "leave", myLeave);
+                if (leaveStatus == "OK")
                 {
-                    string currentLeaveList = Helper.GetXmlAttributeData(userId, SiteMaster.userDB, "userList", "user", "LEAVELIST").Replace(" ", String.Empty);
-                    if (!Helper.DateOverlaps(DateTime.ParseExact(STARTDATE, "dd/MM/yyyy", null), DateTime.ParseExact(ENDDATE, "dd/MM/yyyy", null), currentLeaveList))
+                    string updateUserSickLeaves = Helper.UpdateXmlData(userId, SiteMaster.userDB, "userList", "user", "SICK_LEAVE", remainingSick);
+                    string updateUserLocalLeaves = Helper.UpdateXmlData(userId, SiteMaster.userDB, "userList", "user", "LOCAL_LEAVE", remainingLocal);
+                    string updateUserAnnualLeaves = Helper.UpdateXmlData(userId, SiteMaster.userDB, "userList", "user", "ANNUAL_LEAVE", remainingAnnual);
+                    if(updateUserSickLeaves == "OK" && updateUserLocalLeaves == "OK" && updateUserAnnualLeaves == "OK")
                     {
-                        Leaves aLeave = new Leaves(LEAVETYPE, COMMENT, STATUS, STARTDATE, ENDDATE, LEAVETAKING);
-                        string leaveStatus = Helper.AddXmlData(SiteMaster.leaveDB, "leaveList", "leave", aLeave);
-                        if (leaveStatus == "OK" && LEAVEREMAINING != "404")
-                        {
-                            string userUpdateNumberOfLeaveStatus = Helper.UpdateXmlData(userId, SiteMaster.userDB, "userList", "user",
-                                LEAVETYPE, LEAVEREMAINING);
-                            if (userUpdateNumberOfLeaveStatus == "OK")
-                            {
-                                result = Helper.UpdateXmlData(userId, SiteMaster.userDB, "userList", "user", "LEAVELIST",
-                                    !String.IsNullOrEmpty(currentLeaveList) ? currentLeaveList + ";" + aLeave.ID : aLeave.ID);
-                            }
-                        }
+                        result = Helper.UpdateXmlData(userId, SiteMaster.userDB, "userList", "user", "LEAVELIST",
+                    !String.IsNullOrEmpty(currentLeaveList) ? currentLeaveList + ";" + myLeave.ID : myLeave.ID);
                     }
                     else
                     {
-                        result = "Period overlaps with another leave.";
+                        result = "Update user failed.";
                     }
-                }
-                else
-                {
-                    result = "Number of leaves taking excess current available leaves.";
                 }
             }
             catch (Exception e)

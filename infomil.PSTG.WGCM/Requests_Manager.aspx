@@ -26,10 +26,13 @@
                                 <h3 class="card-title float-left mb-0 mt-2"><span># of requests: </span><span id="totalRequests">0</span></h3>
                                 <ul class="nav nav-tabs float-right border-0 tab-list-emp">
                                     <li class="nav-item" data-toggle="modal" data-target="#newLeave">
-                                        <a class="nav-link active border-0 font-20 grid-view" style="color: #6a782c;" href="javascript:void(0)">Approve all</a>
+                                        <a class="nav-link active border-0 font-20 grid-view" style="color: #6a782c;" href="javascript:void(0)" id="approveBtn">Approve</a>
                                     </li>
                                     <li class="nav-item" data-toggle="modal" data-target="#newLeave">
-                                        <a class="nav-link active border-0 font-20 grid-view" style="color: #ac2936;" href="javascript:void(0)">Reject all</a>
+                                        <a class="nav-link active border-0 font-20 grid-view" style="color: #f6822d;" href="javascript:void(0)" id="escalateBtn">Escalate</a>
+                                    </li>
+                                    <li class="nav-item" data-toggle="modal" data-target="#newLeave">
+                                        <a class="nav-link active border-0 font-20 grid-view" style="color: #ac2936;" href="javascript:void(0)" id="rejectBtn">Reject</a>
                                     </li>
                                 </ul>
                             </div>
@@ -37,9 +40,25 @@
                         <div class="ctm-border-radius shadow-sm grow card">
                             <div class="card-body">
                                 <!--Content tab-->
-                                <div id="requestsCardList" class="row people-grid-row">
-                                    
-                                </div>
+                                <table id="requestTable" class="display">
+                                    <thead>
+                                        <tr>
+                                            <th id="thCheck" onclick="checkToggle(this)"><input type="checkbox" style="margin-left: 49%;"></th>
+                                            <th>Employee</th>
+                                            <th>From</th>
+                                            <th>To</th>
+                                            <th>Sick leave</th>
+                                            <th>Local leave</th>
+                                            <th>Annual leave</th>
+                                            <th>Unpaid leave</th>
+                                            <th>Total</th>
+                                            <th>Comments</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="requestsCardList">
+                                        
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>

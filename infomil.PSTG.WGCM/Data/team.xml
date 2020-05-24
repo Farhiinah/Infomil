@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <teamList>
-    <team ID="6edff69402624382a49d7dfb014e3f0c" NAME="Php" LEAD="181627b135d94eda8e5b87b276747bfa" MEMBERS="7af37aac98ce4ed6966f5ff4d678baaf;4dac4e499afa4f448b4ba64b4775c07d" />
-    <team ID="b97e61fbd0e64e0ca587cf7eec58cdd9" NAME="Js" LEAD="e95cddff75fb4440bed67a3a90da1a79" MEMBERS="4dac4e499afa4f448b4ba64b4775c07d" />
+    <team ID="8fb444ddea6541ee87c1ceada8ecf57e" NAME="Php" LEAD="181627b135d94eda8e5b87b276747bfa" TEAMMANAGER="3a421d48a5e340beb83d03492eb6838e" MEMBERS="4dac4e499afa4f448b4ba64b4775c07d" />
   </teamList>
 </root>
