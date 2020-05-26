@@ -146,3 +146,17 @@ C:\Users\hp\Desktop\Infomill_Prod\infomil.PSTG.WGCM\obj\Debug\infomil.PSTG.WGCM.
 C:\Users\hp\Desktop\Infomill_Prod\infomil.PSTG.WGCM\obj\Debug\infomil.PSTG.WGCM.csproj.CopyComplete
 C:\Users\hp\Desktop\Infomill_Prod\infomil.PSTG.WGCM\obj\Debug\infomil.PSTG.WGCM.dll
 C:\Users\hp\Desktop\Infomill_Prod\infomil.PSTG.WGCM\obj\Debug\infomil.PSTG.WGCM.pdb
+C:\Users\hp\Desktop\Infomill_Prod\infomil.PSTG.WGCM\bin\Google.Apis.Auth.dll
+C:\Users\hp\Desktop\Infomill_Prod\infomil.PSTG.WGCM\bin\Google.Apis.Auth.PlatformServices.dll
+C:\Users\hp\Desktop\Infomill_Prod\infomil.PSTG.WGCM\bin\Google.Apis.Core.dll
+C:\Users\hp\Desktop\Infomill_Prod\infomil.PSTG.WGCM\bin\Google.Apis.dll
+C:\Users\hp\Desktop\Infomill_Prod\infomil.PSTG.WGCM\bin\Google.Apis.Gmail.v1.dll
+C:\Users\hp\Desktop\Infomill_Prod\infomil.PSTG.WGCM\bin\Google.Apis.PlatformServices.dll
+C:\Users\hp\Desktop\Infomill_Prod\infomil.PSTG.WGCM\bin\Google.Apis.pdb
+C:\Users\hp\Desktop\Infomill_Prod\infomil.PSTG.WGCM\bin\Google.Apis.xml
+C:\Users\hp\Desktop\Infomill_Prod\infomil.PSTG.WGCM\bin\Google.Apis.Auth.pdb
+C:\Users\hp\Desktop\Infomill_Prod\infomil.PSTG.WGCM\bin\Google.Apis.Auth.xml
+C:\Users\hp\Desktop\Infomill_Prod\infomil.PSTG.WGCM\bin\Google.Apis.Core.pdb
+C:\Users\hp\Desktop\Infomill_Prod\infomil.PSTG.WGCM\bin\Google.Apis.Core.xml
+C:\Users\hp\Desktop\Infomill_Prod\infomil.PSTG.WGCM\bin\Google.Apis.Gmail.v1.pdb
+C:\Users\hp\Desktop\Infomill_Prod\infomil.PSTG.WGCM\bin\Google.Apis.Gmail.v1.xml

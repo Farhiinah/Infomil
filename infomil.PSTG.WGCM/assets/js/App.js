@@ -4,7 +4,7 @@ class App {
       this.loadAllData()
         .then((dataList) => {
           let users = dataList[0];
-          if(localStorage && localStorage.getItem("CurrentUser") != null) { 
+          if (localStorage && localStorage.getItem("CurrentUser") != null) {
             this.reloadCurrentUser(dataList[0]);
           }
           this.PAGE = window.location.href
@@ -12,22 +12,29 @@ class App {
             .split("/")[1]
             .split(".")[0];
           this.USERLIST = [];
-          this.TEAMLIST = []; 
+          this.TEAMLIST = [];
           this.LEAVELIST = dataList[3];
           this.ACCESSLIST = dataList[2];
-          this.CURRENTUSER = localStorage && localStorage.getItem("CurrentUser") != null ? this.loadUserDetails(
-            JSON.parse(localStorage.getItem("CurrentUser")),
-            this.ACCESSLIST,
-            this.LEAVELIST
-          ) : null;
+          this.CURRENTUSER =
+            localStorage && localStorage.getItem("CurrentUser") != null
+              ? this.loadUserDetails(
+                  JSON.parse(localStorage.getItem("CurrentUser")),
+                  this.ACCESSLIST,
+                  this.LEAVELIST
+                )
+              : null;
           users.forEach((user) => {
-            this.USERLIST.push(this.loadUserDetails(user, this.ACCESSLIST, this.LEAVELIST));
+            this.USERLIST.push(
+              this.loadUserDetails(user, this.ACCESSLIST, this.LEAVELIST)
+            );
           });
           dataList[1].forEach((team) => {
             this.TEAMLIST.push(this.loadTeamsDetails(users, team));
           });
           this.checkCurrentPageInstance(this.PAGE);
-          localStorage.getItem("CurrentUser") != null ? this.enforceUserRights(this.CURRENTUSER) : this.endLoad();
+          localStorage.getItem("CurrentUser") != null
+            ? this.enforceUserRights(this.CURRENTUSER)
+            : this.endLoad();
           resolve(this);
         })
         .catch((error) => {
@@ -37,8 +44,7 @@ class App {
   }
   reloadCurrentUser(userlist) {
     let currentUser = userlist.find(
-      (user) =>
-        user.ID == JSON.parse(localStorage.getItem("CurrentUser")).ID
+      (user) => user.ID == JSON.parse(localStorage.getItem("CurrentUser")).ID
     );
     localStorage.setItem("CurrentUser", JSON.stringify(currentUser));
   }
@@ -103,18 +109,19 @@ class App {
           user.LVLOFACCESS = access;
         }
       });
-      let currentUserLeaves = user.LEAVELIST.includes(";") ? user.LEAVELIST.split(";") : user.LEAVELIST.toString();
+      let currentUserLeaves = user.LEAVELIST.includes(";")
+        ? user.LEAVELIST.split(";")
+        : user.LEAVELIST.toString();
       let userLeaveList = [];
       leaveList.forEach((leave) => {
-        if(Array.isArray(currentUserLeaves)) {
+        if (Array.isArray(currentUserLeaves)) {
           currentUserLeaves.forEach((userLeave) => {
-            if(userLeave == leave.ID) {
+            if (userLeave == leave.ID) {
               userLeaveList.push(leave);
             }
           });
-        }
-        else {
-          if(currentUserLeaves == leave.ID) {
+        } else {
+          if (currentUserLeaves == leave.ID) {
             userLeaveList.push(leave);
           }
         }
@@ -129,7 +136,7 @@ class App {
       if (user.ID == team.LEAD) {
         team.LEAD = user;
       }
-      if(user.ID == team.TEAMMANAGER) {
+      if (user.ID == team.TEAMMANAGER) {
         team.TEAMMANAGER = user;
       }
       let currentTeamMembers = team.MEMBERS;
@@ -156,9 +163,11 @@ class App {
     }
     // Init logout button
     if (currentPage != "Login") {
-      $("#logoutBtn").click(function () {
-        localStorage.clear();
-        window.location.href = "/Login.aspx";
+      $(".logoutBtn").each(function () {
+        $(this).click(function () {
+          localStorage.clear();
+          window.location.href = "/Login.aspx";
+        });
       });
     }
   }
@@ -237,13 +246,10 @@ class App {
         $(domContainer).append(item);
       });
     } else {
-      if($(domContainer).is('select')) {
-        $(domContainer).html(
-          `<option value="">${emptyMessage}</div>`
-        );
-      }
-      else {
-        if(emptyMessage != null) {
+      if ($(domContainer).is("select")) {
+        $(domContainer).html(`<option value="">${emptyMessage}</div>`);
+      } else {
+        if (emptyMessage != null) {
           $(domContainer).html(
             `<div style="width: 80%; margin: 0 auto;"><p style="text-align: center;">${emptyMessage}</p></div>`
           );

@@ -28,16 +28,19 @@ namespace infomil.PSTG.WGCM
         }
 
         [WebMethod]
-        public static string RejectLeave(string IDLIST, string approverId)
+        public static string RejectLeave(string IDLIST, string approverId, string userId)
         {
             string result = "OK";
             try
             {
                 string[] idlist = IDLIST.Split(';');
+                string[] userIdList = userId.Split(';');
                 for (int i = 0; i < idlist.Length; i++)
                 {
                     Helper.UpdateXmlData(idlist[i], SiteMaster.leaveDB, "leaveList", "leave", "STATUS", "Rejected");
                     Helper.UpdateXmlData(idlist[i], SiteMaster.leaveDB, "leaveList", "leave", "APPROVER", approverId);
+                    Helper.SendMail("0295rid1@gmail.com", "Leave request", "Hello test.");
+                    result = Helper.RefillLeave(userIdList[i], idlist[i]);
                 }
             }
             catch (Exception e)

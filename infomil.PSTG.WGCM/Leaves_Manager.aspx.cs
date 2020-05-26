@@ -16,13 +16,13 @@ namespace infomil.PSTG.WGCM
 
         [WebMethod]
         public static string CreateLeave(string userId, string sDate, string eDate,
-            string STATUS, string COMMENT, string NUMOFHOURS, string LEAVEAMOUNT, string UNPAID_LEAVE, string ANNUAL_LEAVE, 
+            string STATUS, string COMMENT, string NUMOFHOURS, string LEAVEAMOUNT, string UNPAID_LEAVE, string ANNUAL_LEAVE,
             string LOCAL_LEAVE, string SICK_LEAVE, string remainingSick, string remainingLocal, string remainingAnnual, string currentLeaveList)
         {
             string result = "OK";
             try
             {
-                Leaves myLeave = new Leaves(sDate, eDate, LEAVEAMOUNT, NUMOFHOURS, SICK_LEAVE, 
+                Leaves myLeave = new Leaves(sDate, eDate, LEAVEAMOUNT, NUMOFHOURS, SICK_LEAVE,
                                             LOCAL_LEAVE, ANNUAL_LEAVE, UNPAID_LEAVE, COMMENT, STATUS
                                            );
                 string leaveStatus = Helper.AddXmlData(SiteMaster.leaveDB, "leaveList", "leave", myLeave);
@@ -31,7 +31,7 @@ namespace infomil.PSTG.WGCM
                     string updateUserSickLeaves = Helper.UpdateXmlData(userId, SiteMaster.userDB, "userList", "user", "SICK_LEAVE", remainingSick);
                     string updateUserLocalLeaves = Helper.UpdateXmlData(userId, SiteMaster.userDB, "userList", "user", "LOCAL_LEAVE", remainingLocal);
                     string updateUserAnnualLeaves = Helper.UpdateXmlData(userId, SiteMaster.userDB, "userList", "user", "ANNUAL_LEAVE", remainingAnnual);
-                    if(updateUserSickLeaves == "OK" && updateUserLocalLeaves == "OK" && updateUserAnnualLeaves == "OK")
+                    if (updateUserSickLeaves == "OK" && updateUserLocalLeaves == "OK" && updateUserAnnualLeaves == "OK")
                     {
                         result = Helper.UpdateXmlData(userId, SiteMaster.userDB, "userList", "user", "LEAVELIST",
                     !String.IsNullOrEmpty(currentLeaveList) ? currentLeaveList + ";" + myLeave.ID : myLeave.ID);

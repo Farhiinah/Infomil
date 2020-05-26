@@ -22,49 +22,71 @@ let dashboardLoadData = () => {
         app.TEAMLIST,
         app.LEAVELIST
       );
-      $("#totalSick").html(app.CURRENTUSER.SICK_LEAVE + " day(s)");
-      $("#totalLocal").html(app.CURRENTUSER.LOCAL_LEAVE + " day(s)");
-      $("#totalAnnual").html(app.CURRENTUSER.ANNUAL_LEAVE + " day(s)");
+      $("#totalSick").html(convertHoursIfAny(app, "SICK_LEAVE"));
+      $("#totalLocal").html(convertHoursIfAny(app, "LOCAL_LEAVE"));
+      $("#totalAnnual").html(convertHoursIfAny(app, "ANNUAL_LEAVE"));
       app.renderList(
         teamLeadListContainer,
         dashboardManager.buildTeamLeadList(),
         "No team lead to display."
       );
       let leaveConstruct = dashboardManager.buildLeaveList();
+      let leaveRequestConstruct = dashboardManager.buildRequestList();
       $(totalLeaveTakingContainer).html(leaveConstruct.totalLeaves);
-      $(totalRequestsContainer).html(
-        dashboardManager.buildRequestList().length
-      );
+      $(totalRequestsContainer).html(leaveRequestConstruct.length);
       app.renderList(
         leaveListContainer,
         leaveConstruct.leaveList,
-        "No upcoming leaves."
+        "No upcoming leave."
       );
-      buildChart([leaveConstruct.totalLeaves, leaveConstruct.totalLeaveRemaining]);
+
+      app.renderList(
+        "#requestlistDashboard",
+        leaveRequestConstruct,
+        "No active request."
+      );
+
+      buildChart([
+        leaveConstruct.totalLeaves,
+        leaveConstruct.totalLeaveRemaining,
+      ]);
+      buildBarChart(dashboardManager.generateBarChartData());
     })
     .catch((err) => {
       console.log(err);
     });
 };
 
+function convertHoursIfAny(app, type) {
+  let val = 0 + " day(s)";
+  if(app.CURRENTUSER[type].includes('.')) {
+    val = app.CURRENTUSER[type].split('.')[0] + " day(s) & " + ((parseFloat(app.CURRENTUSER[type]) % 1) * 8) + " hour(s)";
+  }
+  else {
+    val = app.CURRENTUSER[type] + " day(s)";
+  }
+  return val;
+}
+
 function buildChart(leaveData) {
-  var ctx = document.getElementById("pieChart").getContext("2d");
-  var pieChart = new Chart(ctx, {
+  let color = "#353847";
+  let leavePercentage = (leaveData[0] / leaveData[1]) * 100;
+  if (leavePercentage > 0 && leavePercentage <= 25) {
+    color = "#28a745";
+  } else if (leavePercentage > 25 && leavePercentage <= 50) {
+    color = "#ffc107";
+  } else if (leavePercentage > 50) {
+    color = "#dc3545";
+  }
+  new Chart(document.getElementById("pieChart").getContext("2d"), {
     type: "pie",
     data: {
       labels: ["Leave(s) taken", "Leave(s) remaining"],
       datasets: [
         {
-          label: "# of Votes",
+          label: "",
           data: leaveData,
-          backgroundColor: [
-            "#f6822d",
-            "#353847",
-            "#7f2df6",
-            "#1bd790",
-            "#e8da0d",
-            "#f62d82",
-          ],
+          backgroundColor: [color, "#353847"],
           borderWidth: 1,
         },
       ],
@@ -76,4 +98,47 @@ function buildChart(leaveData) {
       },
     },
   });
+}
+
+function buildBarChart(leaveData) {
+  new Chart(document.getElementById("barChart").getContext("2d"), {
+    type: "bar",
+    data: {
+      labels: ["Sick", "Local", "Annual", "Unpaid"],
+      datasets: [
+        {
+          label: "Team total leave",
+          data: leaveData,
+          fill: false,
+          borderColor: "#373651",
+          backgroundColor: ["#ea7b2b", "#ffc107", "#dc3545"],
+          borderWidth: 1,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      legend: {
+        display: false,
+      },
+    },
+  });
+}
+
+function requestMod(request, leaveId) {
+  new App()
+    .build()
+    .then((app) => {
+      new RequestManager(
+        app.CURRENTUSER,
+        app.USERLIST,
+        app.ACCESSLIST,
+        app.TEAMLIST,
+        app.LEAVELIST
+      ).requestMod(request, [leaveId]);
+      dashboardLoadData();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }

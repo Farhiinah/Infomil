@@ -70,4 +70,9 @@
 
     <script src="assets/js/RequestManager.js"></script>
     <script type="text/javascript" src="assets/js/request.js"></script>
+    <script>
+        if (JSON.parse(localStorage.getItem("CurrentUser")).LVLOFACCESS == "5a56dcc19d924247b5d1f1284a3505b5") {
+            $("#escalateBtn").hide();
+        }
+    </script>
 </asp:Content>

@@ -135,7 +135,35 @@
                                         <h3 class="card-title mb-0 d-inline-block">Upcoming leaves</h3>
                                         <a href="Leaves_Manager.aspx" class="d-inline-block float-right text-primary"><i class="customSuitCase fa fa-suitcase"></i></a>
                                     </div>
-                                    <div class="card-body recent-activ" id="leavelistDashboard">
+                                    <div class="card-body recent-activ" id="leavelistDashboard" style="max-height: 285px; overflow-y: auto;">
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 requestManagement">
+                                <div class="card ctm-border-radius shadow-sm flex-fill grow">
+                                    <div class="card-header">
+                                        <h3 class="card-title mb-0">
+                                            Team summary
+                                            <a href="#" class="d-inline-block float-right text-primary"><i class="customSuitCase fa fa-rocket"></i></a>
+                                        </h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <canvas id="barChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-12 requestManagement">
+                                <!-- Today -->
+                                <div class="card flex-fill today-list shadow-sm grow">
+                                    <div class="card-header">
+                                        <h3 class="card-title mb-0 d-inline-block">Pending requests</h3>
+                                        <a href="Requests_Manager.aspx" class="d-inline-block float-right text-primary"><i class="customSuitCase fa fa-envelope"></i></a>
+                                    </div>
+                                    <div class="card-body recent-activ" id="requestlistDashboard" style="max-height: 285px; overflow-y: auto;">
                                         
                                     </div>
                                 </div>
@@ -151,7 +179,7 @@
                                         <h3 class="card-title mb-0 d-inline-block">Team leads</h3>
                                         <a href="Employees.aspx" class="dash-card float-right mb-0 text-primary">Manage teams</a>
                                     </div>
-                                    <div class="card-body" id="teamLeadListDashboard">
+                                    <div class="card-body" id="teamLeadListDashboard" style="max-height: 285px; overflow-y: auto;">
                                     </div>
                                 </div>
                             </div>
@@ -162,6 +190,8 @@
         </div>
         <!--/Content-->
     </div>
+
+    <script src="assets/js/RequestManager.js"></script>
     <script src="assets/js/DashboardManager.js"></script>
     <script defer type="text/javascript" src="assets/js/indexAdmin.js"></script>
 </asp:Content>

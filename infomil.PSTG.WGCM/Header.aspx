@@ -31,15 +31,7 @@
 
                                     <!-- Notifications -->
                                     <div class="dropdown-menu notification-dropdown-menu shadow-lg border-0 p-3 m-0 dropdown-menu-right">
-                                        <a class="dropdown-item p-2" href="employment.html">
-                                            <span class="media align-items-center">
-                                                <span class="lnr lnr-user mr-3"></span>
-                                                <span class="media-body text-truncate">
-                                                    <span class="text-truncate">Profile</span>
-                                                </span>
-                                            </span>
-                                        </a>
-                                        <a id="logoutBtn" class="dropdown-item p-2" href="javascript:void(0)">
+                                        <a class="dropdown-item p-2 logoutBtn" href="javascript:void(0)">
                                             <span class="media align-items-center">
                                                 <span class="lnr lnr-power-switch mr-3"></span>
                                                 <span class="media-body text-truncate">
@@ -125,15 +117,7 @@
                                         </span>
                                     </span>
                                 </a>
-                                <a class="menuItemMobile p-2" href="#">
-                                    <span class="media align-items-center">
-                                        <span class="lnr lnr-user mr-3"></span>
-                                        <span class="media-body text-truncate text-left">
-                                            <span class="text-truncate text-left">Profile</span>
-                                        </span>
-                                    </span>
-                                </a>
-                                <a class="menuItemMobile p-2" href="#">
+                                <a class="menuItemMobile p-2 logoutBtn" href="#">
                                     <span class="media align-items-center">
                                         <span class="lnr lnr-power-switch mr-3"></span>
                                         <span class="media-body text-truncate text-left">

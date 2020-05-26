@@ -10,22 +10,36 @@ class LeaveManager {
     let leaves = { totalLeaves: 0, leaveList: [] };
     if (this.CURRENTUSER.LEAVELIST.length > 0) {
       this.CURRENTUSER.LEAVELIST.forEach((leave) => {
-        leaves.totalLeaves += parseInt(leave.LEAVEAMOUNT);
+        if (leave.STATUS != "Rejected") {
+          leaves.totalLeaves += parseInt(leave.LEAVEAMOUNT);
+        }
         let approverMark = "";
-        if(leave.STATUS == "Approved") {
-          approverMark = this.USERLIST.find((user)=>{
-            return user.ID == leave.APPROVER;
-          }).LVLOFACCESS.ID  == "94d7b41571da4cccb3d0cb11cc620d69" ? "✔".fontcolor("#2979e7") : "⮙".fontcolor("#009e10");
+        if (
+          leave.STATUS == "Approved" &&
+          this.CURRENTUSER.LVLOFACCESS.ID != "5a56dcc19d924247b5d1f1284a3505b5"
+        ) {
+          approverMark =
+            this.USERLIST.find((user) => {
+              return user.ID == leave.APPROVER;
+            }).LVLOFACCESS.ID == "94d7b41571da4cccb3d0cb11cc620d69"
+              ? "✔".fontcolor("#2979e7")
+              : "⮙".fontcolor("#009e10");
         }
-        if(leave.STATUS == "Escalated") {
-          approverMark = this.USERLIST.find((user)=>{
-            return user.ID == leave.APPROVER;
-          }).LVLOFACCESS.ID  == "94d7b41571da4cccb3d0cb11cc620d69" ? "⭡".fontcolor("#2979e7") : "⭡".fontcolor("#009e10");
+        if (leave.STATUS == "Escalated") {
+          approverMark =
+            this.USERLIST.find((user) => {
+              return user.ID == leave.APPROVER;
+            }).LVLOFACCESS.ID == "94d7b41571da4cccb3d0cb11cc620d69"
+              ? "⭡".fontcolor("#2979e7")
+              : "⭡".fontcolor("#009e10");
         }
-        if(leave.STATUS == "Rejected") {
-          approverMark = this.USERLIST.find((user)=>{
-            return user.ID == leave.APPROVER;
-          }).LVLOFACCESS.ID  == "94d7b41571da4cccb3d0cb11cc620d69" ? "⤬".fontcolor("#2979e7") : "⤬".fontcolor("#009e10");
+        if (leave.STATUS == "Rejected") {
+          approverMark =
+            this.USERLIST.find((user) => {
+              return user.ID == leave.APPROVER;
+            }).LVLOFACCESS.ID == "94d7b41571da4cccb3d0cb11cc620d69"
+              ? "⤬".fontcolor("#2979e7")
+              : "⤬".fontcolor("#009e10");
         }
         leaves.leaveList.push(`
           <tr>
@@ -79,7 +93,6 @@ class LeaveManager {
       if (new Date(eDate) < new Date(sDate)) {
         $.notify("Invalid period.", "error");
       } else {
-        console.log(this._leaveFx.dateOverlaps(sDate, eDate));
         if (this._leaveFx.dateOverlaps(sDate, eDate)) {
           $.notify("Date period overlaps with another.", "error");
         } else {
@@ -111,7 +124,11 @@ class LeaveManager {
                 UNPAID_LEAVE: UNPAIDLEAVE,
                 LEAVEAMOUNT: parseFloat($("#numOfDays").html()),
                 NUMOFHOURS: totalLeaveCount,
-                STATUS: "Sent for approval",
+                STATUS:
+                  this.CURRENTUSER.LVLOFACCESS.ID ==
+                  "5a56dcc19d924247b5d1f1284a3505b5"
+                    ? "Approved"
+                    : "Sent for approval",
                 COMMENT: $("#comments").val(),
                 sDate: sDate.split("-").reverse().join("/"),
                 eDate: eDate.split("-").reverse().join("/"),
@@ -148,14 +165,107 @@ class LeaveManager {
                 );
               }
             } else {
+              $.notify("Incorrect leave input.", "error");
+            }
+          } else {
+            if (totalLeaveCount > parseInt($("#numOfDays").html()) * 8) {
               $.notify(
-                "Incorrect leave input.",
+                "Total leave amount exceeds maximum allowed for time period.",
                 "error"
               );
+            } else {
+              if (totalLeaveCount > 0) {
+                let SICKLEAVE =
+                  $("#SICKLEAVE").val() == "" || $("#SICKLEAVE").val() == null
+                    ? 0
+                    : parseFloat($("#SICKLEAVE").val());
+                let LOCALEAVE =
+                  $("#LOCALEAVE").val() == "" || $("#LOCALEAVE").val() == null
+                    ? 0
+                    : parseFloat($("#LOCALEAVE").val());
+                let ANNUALLEAVE =
+                  $("#ANNUALLEAVE").val() == "" ||
+                  $("#ANNUALLEAVE").val() == null
+                    ? 0
+                    : parseFloat($("#ANNUALLEAVE").val());
+                let UNPAIDLEAVE =
+                  $("#UNPAIDLEAVE").val() == "" ||
+                  $("#UNPAIDLEAVE").val() == null
+                    ? 0
+                    : parseFloat($("#UNPAIDLEAVE").val());
+                let leaveData = {
+                  SICK_LEAVE: SICKLEAVE,
+                  LOCAL_LEAVE: LOCALEAVE,
+                  ANNUAL_LEAVE: ANNUALLEAVE,
+                  UNPAID_LEAVE: UNPAIDLEAVE,
+                  LEAVEAMOUNT: parseFloat($("#numOfDays").html()),
+                  NUMOFHOURS: totalLeaveCount,
+                  STATUS:
+                    this.CURRENTUSER.LVLOFACCESS.ID ==
+                    "5a56dcc19d924247b5d1f1284a3505b5"
+                      ? "Approved"
+                      : "Sent for approval",
+                  COMMENT: $("#comments").val(),
+                  sDate: sDate.split("-").reverse().join("/"),
+                  eDate: eDate.split("-").reverse().join("/"),
+                  currentLeaveList: this._leaveFx.generateLeaveList(),
+                  userId: this.CURRENTUSER.ID,
+                };
+                if (
+                  (leaveData.SICK_LEAVE != 0 && leaveData.SICK_LEAVE < 0.25) ||
+                  (leaveData.LOCAL_LEAVE != 0 &&
+                    leaveData.LOCAL_LEAVE < 0.25) ||
+                  (leaveData.ANNUAL_LEAVE != 0 &&
+                    leaveData.ANNUAL_LEAVE < 0.25) ||
+                  (leaveData.UNPAID_LEAVE != 0 && leaveData.UNPAID_LEAVE < 8) ||
+                  (leaveData.SICK_LEAVE != 0 && leaveData.SICK_LEAVE > 8) ||
+                  (leaveData.LOCAL_LEAVE != 0 && leaveData.LOCAL_LEAVE > 8) ||
+                  (leaveData.ANNUAL_LEAVE != 0 && leaveData.ANNUAL_LEAVE > 8) ||
+                  (leaveData.UNPAID_LEAVE != 0 && leaveData.UNPAID_LEAVE > 8)
+                ) {
+                  $.notify(
+                    "None-all-day leaves should be a minimum of 0.25 & maximum of 8.",
+                    "error"
+                  );
+                } else {
+                  if (
+                    this.CURRENTUSER.SICK_LEAVE == 0 ||
+                    this.CURRENTUSER.SICK_LEAVE * 8 - leaveData.SICK_LEAVE < 0
+                  ) {
+                    $.notify("You do not have enough sick leaves.", "error");
+                  } else if (
+                    this.CURRENTUSER.LOCAL_LEAVE == 0 ||
+                    this.CURRENTUSER.LOCAL_LEAVE * 8 - leaveData.LOCAL_LEAVE < 0
+                  ) {
+                    $.notify("You do not have enough local leaves.", "error");
+                  } else if (
+                    this.CURRENTUSER.ANNUAL_LEAVE == 0 ||
+                    this.CURRENTUSER.ANNUAL_LEAVE * 8 - leaveData.ANNUAL_LEAVE <
+                      0
+                  ) {
+                    $.notify("You do not have enough annual leaves.", "error");
+                  } else {
+                    leaveData.remainingSick =
+                      (this.CURRENTUSER.SICK_LEAVE * 8 - leaveData.SICK_LEAVE) /
+                      8;
+                    leaveData.remainingLocal =
+                      (this.CURRENTUSER.LOCAL_LEAVE * 8 -
+                        leaveData.LOCAL_LEAVE) /
+                      8;
+                    leaveData.remainingAnnual =
+                      (this.CURRENTUSER.ANNUAL_LEAVE * 8 -
+                        leaveData.ANNUAL_LEAVE) /
+                      8;
+                    return this._utilFx.serverRequest(
+                      "CreateLeave",
+                      JSON.stringify(leaveData)
+                    );
+                  }
+                }
+              } else {
+                $.notify("Amount of leave not specified.", "error");
+              }
             }
-          }
-          else {
-
           }
         }
       }
@@ -182,13 +292,14 @@ class LeaveManager {
                 leave.STARTDATE.split("/")[1] +
                 "-" +
                 leave.STARTDATE.split("/")[0]
-            ) <= e
+            ) <= e &&
+            leave.STATUS != "Rejected"
           ) {
             count++;
           }
         });
       }
-      if(count > 0) {
+      if (count > 0) {
         isOverlapping = true;
       }
       return isOverlapping;
