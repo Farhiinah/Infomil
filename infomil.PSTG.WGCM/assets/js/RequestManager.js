@@ -19,7 +19,9 @@ class RequestManager {
         }
       });
       if (currentTeam != null) {
-        if(this.CURRENTUSER.LVLOFACCESS.ID == "5a56dcc19d924247b5d1f1284a3505b5") {
+        if (
+          this.CURRENTUSER.LVLOFACCESS.ID == "5a56dcc19d924247b5d1f1284a3505b5"
+        ) {
           currentTeam.LEAD.LEAVELIST.forEach((leave) => {
             if (leave.STATUS == "Sent for approval") {
               requests.push(`
@@ -112,22 +114,33 @@ class RequestManager {
   requestMod(mod, idList) {
     let IDLIST = "";
     let userIdList = "";
+    let managerIdList = "";
     idList.forEach((val, index) => {
       let relatedUserId = "";
+      let relatedManagerId = "";
       this.USERLIST.forEach((user) => {
         if (user.LEAVELIST.length > 0) {
           user.LEAVELIST.forEach((leave) => {
-            if(leave.ID == val) {
+            if (leave.ID == val) {
               relatedUserId = user.ID;
+                this.TEAMLIST.forEach((team) => {
+                  team.MEMBERS.forEach((member) => {
+                    if(member.ID == relatedUserId) {
+                      relatedManagerId = team.TEAMMANAGER.ID;
+                    }
+                  });
+                });
             }
           });
         }
       });
       userIdList += relatedUserId;
       IDLIST += val;
+      managerIdList += relatedManagerId;
       if (index != idList.length - 1) {
         userIdList += ";";
         IDLIST += ";";
+        managerIdList += ";";
       }
     });
     switch (mod) {
@@ -135,16 +148,15 @@ class RequestManager {
         this._utilFx
           .serverRequest(
             "ApproveLeave",
-            `{IDLIST: '${IDLIST}', approverId: '${this.CURRENTUSER.ID}'}`
+            `{IDLIST: '${IDLIST}', approverId: '${this.CURRENTUSER.ID}', userId: '${userIdList}'}`
           )
           .then((result) => {
             if (result.status == 200) {
               $.notify("Request " + mod + "d.", "success");
               $("#requestTable").html();
-              if(typeof loadRequests === "function") {
+              if (typeof loadRequests === "function") {
                 loadRequests();
-              }
-              else {
+              } else {
                 dashboardLoadData();
               }
             } else {
@@ -166,16 +178,15 @@ class RequestManager {
               this._utilFx
                 .serverRequest(
                   "EscalateLeave",
-                  `{IDLIST: '${IDLIST}', approverId: '${this.CURRENTUSER.ID}'}`
+                  `{IDLIST: '${IDLIST}', approverId: '${this.CURRENTUSER.ID}', userId: '${userIdList}', managerId: '${managerIdList}'}`
                 )
                 .then((result) => {
                   if (result.status == 200) {
                     $.notify("Request " + mod + "d.", "success");
                     $("#requestTable").html();
-                    if(typeof loadRequests === "function") {
+                    if (typeof loadRequests === "function") {
                       loadRequests();
-                    }
-                    else {
+                    } else {
                       dashboardLoadData();
                     }
                   } else {
@@ -209,10 +220,9 @@ class RequestManager {
                   if (result.status == 200) {
                     $.notify("Request " + mod + "ed.", "success");
                     $("#requestTable").html();
-                    if(typeof loadRequests === "function") {
+                    if (typeof loadRequests === "function") {
                       loadRequests();
-                    }
-                    else {
+                    } else {
                       dashboardLoadData();
                     }
                   } else {

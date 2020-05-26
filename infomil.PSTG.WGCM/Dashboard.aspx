@@ -148,7 +148,6 @@
                                     <div class="card-header">
                                         <h3 class="card-title mb-0">
                                             Team summary
-                                            <a href="#" class="d-inline-block float-right text-primary"><i class="customSuitCase fa fa-rocket"></i></a>
                                         </h3>
                                     </div>
                                     <div class="card-body">

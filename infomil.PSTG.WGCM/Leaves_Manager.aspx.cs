@@ -1,6 +1,7 @@
 ﻿using infomil.PSTG.WGCM.Data_Model;
 using System;
 using System.Collections;
+using System.Text.RegularExpressions;
 using System.Web.Services;
 
 namespace infomil.PSTG.WGCM
@@ -17,7 +18,7 @@ namespace infomil.PSTG.WGCM
         [WebMethod]
         public static string CreateLeave(string userId, string sDate, string eDate,
             string STATUS, string COMMENT, string NUMOFHOURS, string LEAVEAMOUNT, string UNPAID_LEAVE, string ANNUAL_LEAVE,
-            string LOCAL_LEAVE, string SICK_LEAVE, string remainingSick, string remainingLocal, string remainingAnnual, string currentLeaveList)
+            string LOCAL_LEAVE, string SICK_LEAVE, string remainingSick, string remainingLocal, string remainingAnnual, string currentLeaveList, string email)
         {
             string result = "OK";
             try
@@ -33,8 +34,16 @@ namespace infomil.PSTG.WGCM
                     string updateUserAnnualLeaves = Helper.UpdateXmlData(userId, SiteMaster.userDB, "userList", "user", "ANNUAL_LEAVE", remainingAnnual);
                     if (updateUserSickLeaves == "OK" && updateUserLocalLeaves == "OK" && updateUserAnnualLeaves == "OK")
                     {
-                        result = Helper.UpdateXmlData(userId, SiteMaster.userDB, "userList", "user", "LEAVELIST",
+                        string updateUserLeaveList = Helper.UpdateXmlData(userId, SiteMaster.userDB, "userList", "user", "LEAVELIST",
                     !String.IsNullOrEmpty(currentLeaveList) ? currentLeaveList + ";" + myLeave.ID : myLeave.ID);
+                        if(updateUserLeaveList == "OK")
+                        {
+                            result = Helper.SendMail(email, "Approval", myLeave.ID, userId);
+                        }
+                        else
+                        {
+                            result = "Failed to update user leave list.";
+                        }
                     }
                     else
                     {

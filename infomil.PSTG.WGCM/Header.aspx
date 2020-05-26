@@ -109,14 +109,6 @@
                                         </span>
                                     </span>
                                 </a>
-                                <a class="menuItemMobile p-2 reportsManagement" href="#">
-                                    <span class="media align-items-center">
-                                        <span class="lnr lnr-rocket mr-3"></span>
-                                        <span class="media-body text-truncate text-left">
-                                            <span class="text-truncate text-left">Reports</span>
-                                        </span>
-                                    </span>
-                                </a>
                                 <a class="menuItemMobile p-2 logoutBtn" href="#">
                                     <span class="media align-items-center">
                                         <span class="lnr lnr-power-switch mr-3"></span>

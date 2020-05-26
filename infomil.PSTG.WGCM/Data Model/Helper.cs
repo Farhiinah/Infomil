@@ -315,18 +315,18 @@ namespace infomil.PSTG.WGCM.Data_Model
             return result;
         }
 
-        public static string SendMail(string email, string subject, string body)
+        public static string SendMail(string email, string variance, string leaveId, string uid)
         {
-            string response = "OK";
+            string response;
             try
             {
                 MailMessage mail = new MailMessage();
                 SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
 
                 mail.From = new MailAddress("infomil@info.com");
-                mail.To.Add("tomive7456@aprimail.com");
+                mail.To.Add(email);
                 mail.Subject = "Leave manager system";
-                mail.Body = "Test body";
+                mail.Body = buildMailBody(variance, Helper.GetElementById(leaveId, SiteMaster.leaveDB, "leaveList", "leave"), Helper.GetElementById(uid, SiteMaster.userDB, "userList", "user"));
 
                 SmtpServer.Port = 587;
                 SmtpServer.Credentials = new System.Net.NetworkCredential("infomilTest1234@gmail.com", "InfoMil1234");
@@ -342,10 +342,93 @@ namespace infomil.PSTG.WGCM.Data_Model
             return response;
         }
 
-        public static string buildMailBody(string variance)
+        public static string buildMailBody(string variance, XElement leave, XElement user)
         {
             string body = "";
-
+            string table =
+                        "<style>" +
+                        "table, th, td {" +
+                        "border: 1px solid black;" +
+                        "border-collapse: collapse;" +
+                        "text-align: center;" +
+                        "}" +
+                        "</style>" +
+                        "<table>" +
+                        "<tr>" +
+                        "<th>" +
+                        "Start date" +
+                        "</th>" +
+                        "<th>" +
+                        "End date" +
+                        "</th>" +
+                        "<th>" +
+                        "Duration" +
+                        "</th>" +
+                        "<th>" +
+                        "Sick leave" +
+                        "</th>" +
+                        "<th>" +
+                        "Local leave" +
+                        "</th>" +
+                        "<th>" +
+                        "Annual leave" +
+                        "</th>" +
+                        "<th>" +
+                        "Unpaid leave" +
+                        "</th>" +
+                        "<th>" +
+                        "Total" +
+                        "</th>" +
+                        "<th>" +
+                        "Comment" +
+                        "</th>" +
+                        "</tr>" +
+                        "<tr>" +
+                        "<td>" +
+                        leave.Attribute("STARTDATE").Value +
+                        "</td>" +
+                        "<td>" +
+                        leave.Attribute("ENDDATE").Value +
+                        "</td>" +
+                        "<td>" +
+                        leave.Attribute("LEAVEAMOUNT").Value +
+                        " day(s)</td>" +
+                        "<td>" +
+                        leave.Attribute("SICK_LEAVE").Value +
+                        " hr(s)</td>" +
+                        "<td>" +
+                        leave.Attribute("LOCAL_LEAVE").Value +
+                        " hr(s)</td>" +
+                        "<td>" +
+                        leave.Attribute("ANNUAL_LEAVE").Value +
+                        " hr(s)</td>" +
+                        "<td>" +
+                        leave.Attribute("UNPAID_LEAVE").Value +
+                        " hr(s)</td>" +
+                        "<td>" +
+                        leave.Attribute("NUMBEROFHOURS").Value +
+                        " hr(s)</td>" +
+                        "<td>" +
+                        leave.Attribute("COMMENT").Value +
+                        "</td>" +
+                        "</tr>" +
+                        "</table>";
+            string signature = "<h6>Please connect to <a href='https://localhost:44322/Requests_Manager.aspx'>leave manager tool</a> for more information.<h6>";
+            switch (variance)
+            {
+                case "Approval":
+                    body = "<h5>New Request from " + user.Attribute("FIRSTNAME").Value + " " + user.Attribute("LASTNAME").Value + "</h5><br/>" + table + "<br/>" + signature;
+                    break;
+                case "Approve":
+                    body = "<h5>Your below leave request has been approved by " + user.Attribute("FIRSTNAME").Value + " " + user.Attribute("LASTNAME").Value + "</h5><br/>" + table + "<br/>" + signature;
+                    break;
+                case "Escalate":
+                    body = "<h5>Your below leave request has been escalated to " + user.Attribute("FIRSTNAME").Value + " " + user.Attribute("LASTNAME").Value + "</h5><br/>" + table + "<br/>" + signature;
+                    break;
+                case "Reject":
+                    body = "<h5>Your below leave request has been rejected by " + user.Attribute("FIRSTNAME").Value + " " + user.Attribute("LASTNAME").Value + "</h5><br/>" + table + "<br/>" + signature;
+                    break;
+            }
             return body;
         }
     }

@@ -330,8 +330,7 @@ class EmployeeManager {
   }
   _teamOpfx = {
     createTeam: () => {
-      let teamMemberDatafx = this.buildNewTeamForm();
-      let teamMemberData = teamMemberDatafx.teamMemberDropdown;
+      let teamMemberData = $("#employeeList").select2('data');
       let teamMembersFinal = "";
       if (teamMemberData.length > 0) {
         teamMemberData.forEach(function (member, index) {
@@ -351,6 +350,7 @@ class EmployeeManager {
           .val(),
         TEAMMEMBERS: teamMembersFinal,
       };
+      console.log(teamData);
       return this._utilFx.serverRequest("CreateTeam", JSON.stringify(teamData));
     },
   };

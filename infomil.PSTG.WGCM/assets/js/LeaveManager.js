@@ -89,7 +89,14 @@ class LeaveManager {
       let totalLeaveCount = parseFloat($("#totalLeaveCount").val());
       let sDate = $(formInput_StartDateContainer).val();
       let eDate = $(formInput_EndDateContainer).val();
-
+      let team = null;
+      this.TEAMLIST.forEach((teams) => {
+        teams.MEMBERS.forEach((member) => {
+          if (member.ID == relatedUserId) {
+            team = teams;
+          }
+        });
+      });
       if (new Date(eDate) < new Date(sDate)) {
         $.notify("Invalid period.", "error");
       } else {
@@ -117,6 +124,7 @@ class LeaveManager {
                 $("#UNPAIDLEAVE").val() == "" || $("#UNPAIDLEAVE").val() == null
                   ? 0
                   : parseFloat($("#UNPAIDLEAVE").val());
+
               let leaveData = {
                 SICK_LEAVE: SICKLEAVE,
                 LOCAL_LEAVE: LOCALEAVE,
@@ -134,18 +142,35 @@ class LeaveManager {
                 eDate: eDate.split("-").reverse().join("/"),
                 currentLeaveList: this._leaveFx.generateLeaveList(),
                 userId: this.CURRENTUSER.ID,
+                email:
+                  this.CURRENTUSER.LVLOFACCESS.ID ==
+                  "181627b135d94eda8e5b87b276747bfa"
+                    ? team.TEAMMANAGER.EMAIL.replace(/[`]/g, "@")
+                    : team.LEAD.EMAIL.replace(/[`]/g, "@"),
               };
               if (
                 this.CURRENTUSER.SICK_LEAVE == 0 ||
-                this.CURRENTUSER.SICK_LEAVE * 8 - leaveData.SICK_LEAVE < 0
+                this.CURRENTUSER.SICK_LEAVE * 8 - leaveData.SICK_LEAVE < 0 &&
+                this.CURRENTUSER.LOCAL_LEAVE == 0 ||
+                this.CURRENTUSER.LOCAL_LEAVE * 8 - leaveData.LOCAL_LEAVE < 0 &&
+                this.CURRENTUSER.ANNUAL_LEAVE == 0 ||
+                this.CURRENTUSER.ANNUAL_LEAVE * 8 - leaveData.ANNUAL_LEAVE < 0
               ) {
                 $.notify("You do not have enough sick leaves.", "error");
               } else if (
                 this.CURRENTUSER.LOCAL_LEAVE == 0 ||
-                this.CURRENTUSER.LOCAL_LEAVE * 8 - leaveData.LOCAL_LEAVE < 0
+                this.CURRENTUSER.LOCAL_LEAVE * 8 - leaveData.LOCAL_LEAVE < 0 &&
+                this.CURRENTUSER.ANNUAL_LEAVE == 0 ||
+                this.CURRENTUSER.ANNUAL_LEAVE * 8 - leaveData.ANNUAL_LEAVE < 0 &&
+                this.CURRENTUSER.SICK_LEAVE == 0 ||
+                this.CURRENTUSER.SICK_LEAVE * 8 - leaveData.SICK_LEAVE < 0 
               ) {
                 $.notify("You do not have enough local leaves.", "error");
               } else if (
+                this.CURRENTUSER.ANNUAL_LEAVE == 0 ||
+                this.CURRENTUSER.ANNUAL_LEAVE * 8 - leaveData.ANNUAL_LEAVE < 0 && 
+                this.CURRENTUSER.SICK_LEAVE == 0 ||
+                this.CURRENTUSER.SICK_LEAVE * 8 - leaveData.SICK_LEAVE < 0  && 
                 this.CURRENTUSER.ANNUAL_LEAVE == 0 ||
                 this.CURRENTUSER.ANNUAL_LEAVE * 8 - leaveData.ANNUAL_LEAVE < 0
               ) {
@@ -210,6 +235,11 @@ class LeaveManager {
                   eDate: eDate.split("-").reverse().join("/"),
                   currentLeaveList: this._leaveFx.generateLeaveList(),
                   userId: this.CURRENTUSER.ID,
+                  email:
+                    this.CURRENTUSER.LVLOFACCESS.ID ==
+                    "181627b135d94eda8e5b87b276747bfa"
+                      ? team.TEAMMANAGER.EMAIL.replace(/[`]/g, "@")
+                      : team.LEAD.EMAIL.replace(/[`]/g, "@"),
                 };
                 if (
                   (leaveData.SICK_LEAVE != 0 && leaveData.SICK_LEAVE < 0.25) ||

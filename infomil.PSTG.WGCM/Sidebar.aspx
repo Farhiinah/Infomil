@@ -49,9 +49,6 @@
                         <div class="col-6 align-items-center shadow-none text-center requestManagement">
                             <a href="Requests_Manager.aspx" class="menuItem text-dark p-4 ctm-border-right ctm-border-left"><span class="lnr lnr-envelope pr-0 pb-lg-2 font-23"></span><span class="">Requests</span></a>
                         </div>
-                        <div class="col-6 align-items-center shadow-none text-center reportsManagement">
-                            <a href="#" class="menuItem text-dark p-4 ctm-border-right ctm-border-left"><span class="lnr lnr-rocket pr-0 pb-lg-2 font-23"></span><span class="">Reports</span></a>
-                        </div>
                     </div>
                 </div>
             </div>
