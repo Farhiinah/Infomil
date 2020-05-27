@@ -10,7 +10,7 @@ class LeaveManager {
     let leaves = { totalLeaves: 0, leaveList: [] };
     if (this.CURRENTUSER.LEAVELIST.length > 0) {
       this.CURRENTUSER.LEAVELIST.forEach((leave) => {
-        if (leave.STATUS != "Rejected") {
+        if (leave.STATUS != "Rejected" || leave.STATUS != "Cancelled") {
           leaves.totalLeaves += parseInt(leave.LEAVEAMOUNT);
         }
         let approverMark = "";
@@ -43,6 +43,13 @@ class LeaveManager {
         }
         leaves.leaveList.push(`
           <tr>
+          ${
+            leave.STATUS != "Cancelled" && leave.STATUS != "Rejected"
+              ? `<td class="selectAreaLeave" data="${leave.ID}" style="text-align: center;">
+          <input type="checkbox" onchange="checkToggleCherryPick(this, '${leave.ID}')">
+          </td>`
+              : `<td></td>`
+          }
           <td style="text-align: center;">${leave.STARTDATE}</td>
           <td style="text-align: center;">${leave.ENDDATE}</td>
           <td style="text-align: center;">${leave.SICK_LEAVE}</td>
@@ -59,7 +66,46 @@ class LeaveManager {
     }
     return leaves;
   }
-  leaveOp(mod, uid) {
+  leaveOp(mod, idList) {
+    let IDLIST = "";
+    let emailIdList = "";
+    let userIdList = "";
+    if (typeof idList != "undefined") {
+      if (idList.length > 0) {
+        idList.forEach((val, index) => {
+          let relatedUserId = "";
+          let relatedEmailId = "";
+          this.USERLIST.forEach((user) => {
+            if (user.LEAVELIST.length > 0) {
+              user.LEAVELIST.forEach((leave) => {
+                if (leave.ID == val) {
+                  relatedUserId = user.ID;
+                  this.TEAMLIST.forEach((team) => {
+                    team.MEMBERS.forEach((member) => {
+                      if (member.ID == relatedUserId) {
+                        if (leave.STATUS == "Escalated") {
+                          relatedEmailId = team.TEAMMANAGER.ID;
+                        } else {
+                          relatedEmailId = team.LEAD.ID;
+                        }
+                      }
+                    });
+                  });
+                }
+              });
+            }
+          });
+          userIdList += relatedUserId;
+          IDLIST += val;
+          emailIdList += relatedEmailId;
+          if (index != idList.length - 1) {
+            userIdList += ";";
+            IDLIST += ";";
+            emailIdList += ";";
+          }
+        });
+      }
+    }
     switch (mod) {
       case "create":
         let results = this._leaveFx.createLeave();
@@ -86,6 +132,42 @@ class LeaveManager {
               $.notify(err.message, "error");
             });
         }
+        break;
+      case "cancel":
+        this._utilFx
+          .confirm(
+            "Are you sure you want to cancel the selected leave?",
+            "Cancel leave"
+          )
+          .then((response) => {
+            if (response) {
+              this._utilFx
+                .serverRequest(
+                  "CancelLeave",
+                  `{IDLIST: '${IDLIST}', emailIdList: '${this.CURRENTUSER.ID}', userIdList: '${userIdList}'}`
+                )
+                .then((result) => {
+                  $("#loader").delay(100).fadeOut("slow");
+                  $("#loader-wrapper").delay(500).fadeOut("slow");
+                  if (result.status == 200) {
+                    $.notify("Leaves " + mod + "led.", "success");
+                    location.reload();
+                  } else {
+                    $.notify("Server error: " + result.message, "error");
+                  }
+                })
+                .catch((err) => {
+                  $("#loader").delay(100).fadeOut("slow");
+                  $("#loader-wrapper").delay(500).fadeOut("slow");
+                  $.notify("Error: " + err.message, "error");
+                });
+            }
+          })
+          .catch((err) => {
+            $("#loader").delay(100).fadeOut("slow");
+            $("#loader-wrapper").delay(500).fadeOut("slow");
+            $.notify("Error: " + err, "error");
+          });
         break;
     }
   }

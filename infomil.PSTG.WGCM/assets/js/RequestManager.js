@@ -34,7 +34,7 @@ class RequestManager {
                 }')">
                 </td>
                 <td style="text-align: center;">${
-                  currentTeam.LEAD.FIRSTNAME + " " + currentTeam.LEAD.LASTNAME
+                  currentTeam.LEAD.FIRSTNAME + " " + currentTeam.LEAD.LASTNAME 
                 }</td>
                 <td style="text-align: center;">${leave.STARTDATE}</td>
                 <td style="text-align: center;">${leave.ENDDATE}</td>

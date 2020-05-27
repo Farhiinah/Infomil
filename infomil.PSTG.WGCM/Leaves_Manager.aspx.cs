@@ -36,7 +36,7 @@ namespace infomil.PSTG.WGCM
                     {
                         string updateUserLeaveList = Helper.UpdateXmlData(userId, SiteMaster.userDB, "userList", "user", "LEAVELIST",
                     !String.IsNullOrEmpty(currentLeaveList) ? currentLeaveList + ";" + myLeave.ID : myLeave.ID);
-                        if(updateUserLeaveList == "OK")
+                        if (updateUserLeaveList == "OK")
                         {
                             result = Helper.SendMail(email, "Approval", myLeave.ID, userId);
                         }
@@ -48,6 +48,40 @@ namespace infomil.PSTG.WGCM
                     else
                     {
                         result = "Update user failed.";
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                result = e.Message;
+            }
+            return result;
+        }
+
+        [WebMethod]
+        public static string CancelLeave(string IDLIST, string emailIdList, string userIdList)
+        {
+            string result = "OK";
+            try
+            {
+                string[] idlist = IDLIST.Split(';');
+                string[] userIdLists = userIdList.Split(';');
+                string[] emailIdLists = emailIdList.Split(';');
+                for (int i = 0; i < idlist.Length; i++)
+                {
+                    Helper.UpdateXmlData(idlist[i], SiteMaster.leaveDB, "leaveList", "leave", "STATUS", "Cancelled");
+                    Helper.UpdateXmlData(idlist[i], SiteMaster.leaveDB, "leaveList", "leave", "APPROVER", "");
+
+                    string email = Regex.Replace(Helper.GetElementById(userIdLists[i], SiteMaster.userDB, "userList", "user").Attribute("EMAIL").Value, "[`]", "@");
+                    string cancelMailStatus = Helper.SendMail(email, "Cancel", idlist[i], userIdLists[i]);
+                    if (cancelMailStatus == "OK")
+                    {
+                        string approverEmail = Regex.Replace(Helper.GetElementById(i < emailIdLists.Length ? emailIdLists[i] : emailIdLists[i - 1], SiteMaster.userDB, "userList", "user").Attribute("EMAIL").Value, "[`]", "@");
+                        string approverEmailStatus = Helper.SendMail(approverEmail, "Cancel_Approver", idlist[i], i < emailIdLists.Length ? emailIdLists[i] : emailIdLists[i - 1]);
+                        if (approverEmailStatus == "OK")
+                        {
+                            result = Helper.RefillLeave(userIdLists[i], idlist[i]);
+                        }
                     }
                 }
             }

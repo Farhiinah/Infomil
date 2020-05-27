@@ -7,6 +7,7 @@ const formInput_StartDateContainer = "#startDate";
 const formInput_EndDateContainer = "#endDate";
 
 let listenersLoaded = false;
+let selectedLeaveData = new Set();
 
 $(document).ready(function () {
   leaveLoadData();
@@ -26,12 +27,8 @@ let leaveLoadData = () => {
 
       let leaveConstruct = leaveManager.buildLeaveList();
       $(leavesCountContainer).html(leaveConstruct.totalLeaves);
-      app.renderList(
-        leavesListContainer,
-        leaveConstruct.leaveList,
-        null
-      );
-      $('#leaveTable').DataTable(); 
+      app.renderList(leavesListContainer, leaveConstruct.leaveList, null);
+      $("#leaveTable").DataTable();
 
       !listenersLoaded ? initListners(app, leaveManager) : app.endLoad();
     })
@@ -56,12 +53,18 @@ function initListners(app, leaveManager) {
       params: "sDate",
       preventDefaultEvent: false,
     },
-
     {
       dom: formInput_EndDateContainer,
       eventType: "change",
       action: "calculateTotalAbsences",
       preventDefaultEvent: false,
+    },
+    {
+      dom: "#cancelLeave",
+      eventType: "click",
+      action: "cancelLeave",
+      params: leaveManager,
+      preventDefaultEvent: true,
     },
   ];
   formInputListeners.forEach((formInput) => {
@@ -81,9 +84,17 @@ function createLeave(controller) {
   controller.leaveOp("create");
 }
 
+function cancelLeave(controller) {
+  if (selectedLeaveData.size > 0) {
+    controller.leaveOp("cancel", Array.from(selectedLeaveData));
+  } else {
+    $.notify("Please select at least 1 leave.", "error");
+  }
+}
+
 function calculateTotalAbsences(mod) {
   let sDate = $(formInput_StartDateContainer).val();
-  if(mod == "sDate") {
+  if (mod == "sDate") {
     $(formInput_EndDateContainer).val(sDate);
   }
   let eDate = $(formInput_EndDateContainer).val();
@@ -103,8 +114,7 @@ function calculateTotalAbsences(mod) {
       $.notify("Invalid period.", "error");
       $("#numOfDays").html(0);
       $("#numOfHrs").html(0);
-    }
-    else {
+    } else {
       $("#numOfDays").html(totalDays);
       if (!$("#allDay").is(":checked")) {
         $("#numOfHrs").html("Min: 0.25, Max: 8 per day.");
@@ -176,4 +186,48 @@ function formatDate(date) {
   if (day.length < 2) day = "0" + day;
 
   return [year, month, day].join("-");
+}
+
+function checkToggleLeave(input) {
+  $(input).find("input[type=checkbox]").click();
+  $(".selectAreaLeave").each(function () {
+    if (!$(input).find("input[type=checkbox]").prop("checked")) {
+      $(this).find("input[type=checkbox]").prop("checked", false);
+      selectedLeaveData.clear();
+    } else {
+      $(this).find("input[type=checkbox]").prop("checked", true);
+      selectedLeaveData.add($(this).attr("data"));
+    }
+  });
+  if (selectedLeaveData.size > 0) {
+    $("#cancelLeave").show();
+  } else {
+    $("#cancelLeave").hide();
+  }
+}
+
+function checkToggleCherryPick(input, data) {
+  if ($(input).prop("checked")) {
+    selectedLeaveData.add(data);
+  } else {
+    if (
+      $("#thCheckLeave").find("input[type=checkbox]").prop("checked") &&
+      selectedLeaveData.size > 1
+    ) {
+      $("#thCheckLeave")
+        .find("input[type=checkbox]")
+        .prop("indeterminate", true);
+    } else {
+      $("#thCheckLeave")
+        .find("input[type=checkbox]")
+        .prop("indeterminate", false);
+      $("#thCheckLeave").find("input[type=checkbox]").prop("checked", false);
+    }
+    selectedLeaveData.delete(data);
+  }
+  if (selectedLeaveData.size > 0) {
+    $("#cancelLeave").show();
+  } else {
+    $("#cancelLeave").hide();
+  }
 }

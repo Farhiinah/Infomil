@@ -31,7 +31,7 @@ class DashboardManager {
     let leaves = { totalLeaves: 0, leaveList: [], totalLeaveRemaining: 0 };
     if (this.CURRENTUSER.LEAVELIST.length > 0) {
       this.CURRENTUSER.LEAVELIST.forEach((leave) => {
-        if (leave.STATUS != "Rejected") {
+        if (leave.STATUS != "Rejected"|| leave.STATUS != "Cancelled") {
           leaves.totalLeaves += parseFloat(leave.LEAVEAMOUNT);
         }
         leaves.leaveList.push(`
@@ -213,7 +213,7 @@ class DashboardManager {
     if (this.LEAVELIST.length > 0) {
       let currentTeam = null;
       this.TEAMLIST.forEach((team) => {
-        if (team.LEAD.ID == this.CURRENTUSER.ID) {
+        if (team.LEAD.ID == this.CURRENTUSER.ID || team.TEAMMANAGER.ID == this.CURRENTUSER.ID) {
           currentTeam = team;
         }
       });

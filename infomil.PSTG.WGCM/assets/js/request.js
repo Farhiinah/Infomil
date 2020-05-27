@@ -93,7 +93,7 @@ function checkToggleCherryPick(input, data) {
     ) {
       $("#thCheck").find("input[type=checkbox]").prop("indeterminate", true);
     } else {
-      $("#thCheck").find("input[type=checkbox]").prop("indeterminate", false);
+      $("#thCheck").find("input[type=checkbox]").prop("indeterminate", false); 
       $("#thCheck").find("input[type=checkbox]").prop("checked", false);
     }
     selectedRequestData.delete(data);

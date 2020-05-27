@@ -26,7 +26,10 @@
                                 <h3 class="card-title float-left mb-0 mt-2"><span># of leaves: </span><span id="totalLeaves">0</span></h3>
                                 <ul class="nav nav-tabs float-right border-0 tab-list-emp">
                                     <li class="nav-item" data-toggle="modal" data-target="#newLeave">
-                                        <a class="nav-link active border-0 font-23 grid-view" href="javascript:void(0)"><i class="fa fa-plus" aria-hidden="true"></i></a>
+                                        <a class="nav-link active border-0 font-23 grid-view" href="javascript:void(0)" title="Request leave"><i class="fa fa-plus" aria-hidden="true"></i></a>
+                                    </li>
+                                    <li class="nav-item" id="cancelLeave" style="display: none;">
+                                        <a class="nav-link active border-0 font-23 grid-view" href="javascript:void(0)" title="Cancel leave"><i class="fa fa-ban" aria-hidden="true"></i></a>
                                     </li>
                                 </ul>
                             </div>
@@ -37,6 +40,7 @@
                                 <table id="leaveTable" class="display">
                                     <thead>
                                         <tr>
+                                            <th id="thCheckLeave" onclick="checkToggleLeave(this)"><input type="checkbox" style="margin-left: 49%;"></th>
                                             <th style="text-align: center;">From</th>
                                             <th style="text-align: center;">To</th>
                                             <th style="text-align: center;">Sick leave</th>

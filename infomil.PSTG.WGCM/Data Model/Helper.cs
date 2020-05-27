@@ -428,6 +428,12 @@ namespace infomil.PSTG.WGCM.Data_Model
                 case "Reject":
                     body = "<h5>Your below leave request has been rejected by " + user.Attribute("FIRSTNAME").Value + " " + user.Attribute("LASTNAME").Value + "</h5><br/>" + table + "<br/>" + signature;
                     break;
+                case "Cancel":
+                    body = "<h5>The below leave request has been cancelled</h5><br/>" + table + "<br/>" + signature;
+                    break;
+                case "Cancel_Approver":
+                    body = "<h5>The below leave request has been cancelled by " + user.Attribute("FIRSTNAME").Value + " " + user.Attribute("LASTNAME").Value + "</h5><br/>" + table + "<br/>" + signature;
+                    break;
             }
             return body;
         }
