@@ -156,11 +156,12 @@ class RequestManager {
             if (result.status == 200) {
               $.notify("Request " + mod + "d.", "success");
               $("#requestTable").html();
-              if (typeof loadRequests === "function") {
+              /*if (typeof loadRequests === "function") {
                 loadRequests();
               } else {
                 dashboardLoadData();
-              }
+              }*/
+              location.reload();
             } else {
               $.notify("Server error: " + result.message, "error");
             }
@@ -190,11 +191,12 @@ class RequestManager {
                   if (result.status == 200) {
                     $.notify("Request " + mod + "d.", "success");
                     $("#requestTable").html();
-                    if (typeof loadRequests === "function") {
+                    /*if (typeof loadRequests === "function") {
                       loadRequests();
                     } else {
                       dashboardLoadData();
-                    }
+                    }*/
+                    location.reload();
                   } else {
                     $.notify("Server error: " + result.message, "error");
                   }
@@ -229,11 +231,12 @@ class RequestManager {
                   if (result.status == 200) {
                     $.notify("Request " + mod + "ed.", "success");
                     $("#requestTable").html();
-                    if (typeof loadRequests === "function") {
+                    /*if (typeof loadRequests === "function") {
                       loadRequests();
                     } else {
                       dashboardLoadData();
-                    }
+                    }*/
+                    location.reload();
                   } else {
                     $.notify("Server error: " + result.message, "error");
                   }

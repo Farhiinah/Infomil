@@ -75,7 +75,7 @@ namespace infomil.PSTG.WGCM
                     string escalationMailStatus = Helper.SendMail(email, "Approval", idlist[i], userIdList[i]);
                     if(escalationMailStatus == "OK")
                     {
-                        string managerEmail = Regex.Replace(Helper.GetElementById(managerId, SiteMaster.userDB, "userList", "user").Attribute("EMAIL").Value, "[`]", "@");
+                        string managerEmail = Regex.Replace(Helper.GetElementById(managerIdList[i], SiteMaster.userDB, "userList", "user").Attribute("EMAIL").Value, "[`]", "@");
                         result = Helper.SendMail(managerEmail, "Escalate", idlist[i], managerIdList[i]);
                     }
                 }

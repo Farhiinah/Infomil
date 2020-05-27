@@ -70,7 +70,8 @@ class LeaveManager {
               $("#loader-wrapper").delay(500).fadeOut("slow");
               if (result.status == 200) {
                 $.notify("Leave " + mod + "d.", "success");
-                leaveLoadData();
+                //leaveLoadData();
+                location.reload();
               } else {
                 $.notify("An error occured: " + result.message, "error");
               }
