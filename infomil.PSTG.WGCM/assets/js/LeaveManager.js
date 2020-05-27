@@ -66,6 +66,8 @@ class LeaveManager {
         if (typeof results != "undefined") {
           results
             .then((result) => {
+              $("#loader").delay(100).fadeOut("slow");
+              $("#loader-wrapper").delay(500).fadeOut("slow");
               if (result.status == 200) {
                 $.notify("Leave " + mod + "d.", "success");
                 leaveLoadData();
@@ -78,6 +80,8 @@ class LeaveManager {
               $("#numOfHrs").html(0);
             })
             .catch((err) => {
+              $("#loader").delay(100).fadeOut("slow");
+              $("#loader-wrapper").delay(500).fadeOut("slow");
               $.notify(err.message, "error");
             });
         }
@@ -92,7 +96,7 @@ class LeaveManager {
       let team = null;
       this.TEAMLIST.forEach((teams) => {
         teams.MEMBERS.forEach((member) => {
-          if (member.ID == relatedUserId) {
+          if (member.ID == this.CURRENTUSER.ID) {
             team = teams;
           }
         });
@@ -150,28 +154,30 @@ class LeaveManager {
               };
               if (
                 this.CURRENTUSER.SICK_LEAVE == 0 ||
-                this.CURRENTUSER.SICK_LEAVE * 8 - leaveData.SICK_LEAVE < 0 &&
-                this.CURRENTUSER.LOCAL_LEAVE == 0 ||
-                this.CURRENTUSER.LOCAL_LEAVE * 8 - leaveData.LOCAL_LEAVE < 0 &&
-                this.CURRENTUSER.ANNUAL_LEAVE == 0 ||
+                (this.CURRENTUSER.SICK_LEAVE * 8 - leaveData.SICK_LEAVE < 0 &&
+                  this.CURRENTUSER.LOCAL_LEAVE == 0) ||
+                (this.CURRENTUSER.LOCAL_LEAVE * 8 - leaveData.LOCAL_LEAVE < 0 &&
+                  this.CURRENTUSER.ANNUAL_LEAVE == 0) ||
                 this.CURRENTUSER.ANNUAL_LEAVE * 8 - leaveData.ANNUAL_LEAVE < 0
               ) {
                 $.notify("You do not have enough sick leaves.", "error");
               } else if (
                 this.CURRENTUSER.LOCAL_LEAVE == 0 ||
-                this.CURRENTUSER.LOCAL_LEAVE * 8 - leaveData.LOCAL_LEAVE < 0 &&
-                this.CURRENTUSER.ANNUAL_LEAVE == 0 ||
-                this.CURRENTUSER.ANNUAL_LEAVE * 8 - leaveData.ANNUAL_LEAVE < 0 &&
-                this.CURRENTUSER.SICK_LEAVE == 0 ||
-                this.CURRENTUSER.SICK_LEAVE * 8 - leaveData.SICK_LEAVE < 0 
+                (this.CURRENTUSER.LOCAL_LEAVE * 8 - leaveData.LOCAL_LEAVE < 0 &&
+                  this.CURRENTUSER.ANNUAL_LEAVE == 0) ||
+                (this.CURRENTUSER.ANNUAL_LEAVE * 8 - leaveData.ANNUAL_LEAVE <
+                  0 &&
+                  this.CURRENTUSER.SICK_LEAVE == 0) ||
+                this.CURRENTUSER.SICK_LEAVE * 8 - leaveData.SICK_LEAVE < 0
               ) {
                 $.notify("You do not have enough local leaves.", "error");
               } else if (
                 this.CURRENTUSER.ANNUAL_LEAVE == 0 ||
-                this.CURRENTUSER.ANNUAL_LEAVE * 8 - leaveData.ANNUAL_LEAVE < 0 && 
-                this.CURRENTUSER.SICK_LEAVE == 0 ||
-                this.CURRENTUSER.SICK_LEAVE * 8 - leaveData.SICK_LEAVE < 0  && 
-                this.CURRENTUSER.ANNUAL_LEAVE == 0 ||
+                (this.CURRENTUSER.ANNUAL_LEAVE * 8 - leaveData.ANNUAL_LEAVE <
+                  0 &&
+                  this.CURRENTUSER.SICK_LEAVE == 0) ||
+                (this.CURRENTUSER.SICK_LEAVE * 8 - leaveData.SICK_LEAVE < 0 &&
+                  this.CURRENTUSER.ANNUAL_LEAVE == 0) ||
                 this.CURRENTUSER.ANNUAL_LEAVE * 8 - leaveData.ANNUAL_LEAVE < 0
               ) {
                 $.notify("You do not have enough annual leaves.", "error");
@@ -377,6 +383,8 @@ class LeaveManager {
       });
     },
     serverRequest: (action, data) => {
+      $("#loader").show();
+      $("#loader-wrapper").show();
       return new Promise((resolve, reject) => {
         makeAjaxReq("Leaves_Manager.aspx/" + action, data).then((response) => {
           if (response.d == "OK") {

@@ -123,13 +123,13 @@ class RequestManager {
           user.LEAVELIST.forEach((leave) => {
             if (leave.ID == val) {
               relatedUserId = user.ID;
-                this.TEAMLIST.forEach((team) => {
-                  team.MEMBERS.forEach((member) => {
-                    if(member.ID == relatedUserId) {
-                      relatedManagerId = team.TEAMMANAGER.ID;
-                    }
-                  });
+              this.TEAMLIST.forEach((team) => {
+                team.MEMBERS.forEach((member) => {
+                  if (member.ID == relatedUserId) {
+                    relatedManagerId = team.TEAMMANAGER.ID;
+                  }
                 });
+              });
             }
           });
         }
@@ -151,6 +151,8 @@ class RequestManager {
             `{IDLIST: '${IDLIST}', approverId: '${this.CURRENTUSER.ID}', userId: '${userIdList}'}`
           )
           .then((result) => {
+            $("#loader").delay(100).fadeOut("slow");
+            $("#loader-wrapper").delay(500).fadeOut("slow");
             if (result.status == 200) {
               $.notify("Request " + mod + "d.", "success");
               $("#requestTable").html();
@@ -164,6 +166,8 @@ class RequestManager {
             }
           })
           .catch((err) => {
+            $("#loader").delay(100).fadeOut("slow");
+            $("#loader-wrapper").delay(500).fadeOut("slow");
             $.notify("Error: " + err, "error");
           });
         break;
@@ -181,6 +185,8 @@ class RequestManager {
                   `{IDLIST: '${IDLIST}', approverId: '${this.CURRENTUSER.ID}', userId: '${userIdList}', managerId: '${managerIdList}'}`
                 )
                 .then((result) => {
+                  $("#loader").delay(100).fadeOut("slow");
+                  $("#loader-wrapper").delay(500).fadeOut("slow");
                   if (result.status == 200) {
                     $.notify("Request " + mod + "d.", "success");
                     $("#requestTable").html();
@@ -194,6 +200,8 @@ class RequestManager {
                   }
                 })
                 .catch((err) => {
+                  $("#loader").delay(100).fadeOut("slow");
+                  $("#loader-wrapper").delay(500).fadeOut("slow");
                   $.notify("Error: " + err, "error");
                 });
             }
@@ -203,7 +211,6 @@ class RequestManager {
           });
         break;
       case "reject":
-        console.log(userIdList);
         this._utilFx
           .confirm(
             "Are you sure you want to reject the selected request?",
@@ -217,6 +224,8 @@ class RequestManager {
                   `{IDLIST: '${IDLIST}', approverId: '${this.CURRENTUSER.ID}', userId: '${userIdList}'}`
                 )
                 .then((result) => {
+                  $("#loader").delay(100).fadeOut("slow");
+                  $("#loader-wrapper").delay(500).fadeOut("slow");
                   if (result.status == 200) {
                     $.notify("Request " + mod + "ed.", "success");
                     $("#requestTable").html();
@@ -230,12 +239,16 @@ class RequestManager {
                   }
                 })
                 .catch((err) => {
+                  $("#loader").delay(100).fadeOut("slow");
+                  $("#loader-wrapper").delay(500).fadeOut("slow");
                   console.log(err);
                   $.notify("Error: " + err, "error");
                 });
             }
           })
           .catch((response) => {
+            $("#loader").delay(100).fadeOut("slow");
+            $("#loader-wrapper").delay(500).fadeOut("slow");
             console.log(response);
           });
         break;
@@ -254,6 +267,8 @@ class RequestManager {
       });
     },
     serverRequest: (action, data) => {
+      $("#loader").show();
+      $("#loader-wrapper").show();
       return new Promise((resolve, reject) => {
         makeAjaxReq("Requests_Manager.aspx/" + action, data).then(
           (response) => {

@@ -15,9 +15,9 @@ namespace infomil.PSTG.WGCM.Data_Model
         public string LVLOFACCESS { get; set; }
         public string ACTIVE { get; set; }
         public string PROFILEPIC { get; set; }
-        public string SICKLEAVE { get; set; }
-        public string LOCALLEAVE { get; set; }
-        public string ANNUALLEAVE { get; set; }
+        public string SICK_LEAVE { get; set; }
+        public string LOCAL_LEAVE { get; set; }
+        public string ANNUAL_LEAVE { get; set; }
         public string LEAVELIST { get; set; }
         public User(string fname, string lname, string uname, string email, string ini,
             string pswd, string lvlOfAccess, bool active, string profPic,
@@ -33,9 +33,9 @@ namespace infomil.PSTG.WGCM.Data_Model
             this.LVLOFACCESS = lvlOfAccess;
             this.ACTIVE = active.ToString().ToLower();
             this.PROFILEPIC = profPic;
-            this.SICKLEAVE = sickLeave;
-            this.LOCALLEAVE = localLeave;
-            this.ANNUALLEAVE = annualLeave;
+            this.SICK_LEAVE = sickLeave;
+            this.LOCAL_LEAVE = localLeave;
+            this.ANNUAL_LEAVE = annualLeave;
             this.LEAVELIST = leaveList;
         }
     }
