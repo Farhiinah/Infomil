@@ -21,7 +21,7 @@ class AccessManager {
             <span style="font-size: 1.3em;">
             ${access.NAME} 
             ${
-              index > 3
+              index > 4
                 ? `<span style="float:right; color: #dc3545;" onclick="new AccessManager().accessLevelOp('delete', '${access.ID}')">
             <i class="fa fa-trash"></i>
             </span>`

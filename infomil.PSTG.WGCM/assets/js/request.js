@@ -2,7 +2,7 @@ const requestsListContainer = "#requestsCardList";
 const requestsCountContainer = "#totalRequests";
 
 let listenersLoaded = false;
-let selectedRequestData = new Set();
+var selectedRequestData = new Set();
 
 $(document).ready(function () {
   loadRequests();
@@ -57,6 +57,13 @@ function initListners(app, requestManager) {
       params: { controller: requestManager, mod: "reject" },
       preventDefaultEvent: true,
     },
+    {
+      dom: "#exportLeave",
+      eventType: "click",
+      action: "exportLeaves",
+      params: requestManager,
+      preventDefaultEvent: true,
+    },
   ];
   formInputListeners.forEach((formInput) => {
     app.addListener(
@@ -93,7 +100,7 @@ function checkToggleCherryPick(input, data) {
     ) {
       $("#thCheck").find("input[type=checkbox]").prop("indeterminate", true);
     } else {
-      $("#thCheck").find("input[type=checkbox]").prop("indeterminate", false); 
+      $("#thCheck").find("input[type=checkbox]").prop("indeterminate", false);
       $("#thCheck").find("input[type=checkbox]").prop("checked", false);
     }
     selectedRequestData.delete(data);
@@ -103,9 +110,60 @@ function checkToggleCherryPick(input, data) {
 function requestMod(params) {
   let controller = params.controller;
   let mod = params.mod;
-  if (selectedRequestData.size > 0) {
-    controller.requestMod(mod, Array.from(selectedRequestData));
+  if (controller == null) {
+    new App().build().then((app) => {
+      controller = new RequestManager(
+        app.CURRENTUSER,
+        app.USERLIST,
+        app.ACCESSLIST,
+        app.TEAMLIST,
+        app.LEAVELIST
+      );
+      if (selectedRequestData.size > 0) {
+        if (mod == "approve") {
+          $("#approvalComment").modal("show");
+          $("#approvalCommentForm").on("submit", function (e) {
+            e.preventDefault();
+            controller.requestMod(
+              mod,
+              Array.from(selectedRequestData),
+              $("#ApprovalComment").val().trim()
+            );
+          });
+        } else {
+          controller.requestMod(mod, Array.from(selectedRequestData));
+        }
+      } else {
+        $.notify("Select at least 1 request.", "error");
+      }
+    });
   } else {
-    $.notify("Select at least 1 request.", "error");
+    if (selectedRequestData.size > 0) {
+      if (mod == "approve") {
+        $("#approvalComment").modal("show");
+        $("#approvalCommentForm").on("submit", function (e) {
+          e.preventDefault();
+          controller.requestMod(
+            mod,
+            Array.from(selectedRequestData),
+            $("#ApprovalComment").val().trim()
+          );
+        });
+      } else {
+        controller.requestMod(mod, Array.from(selectedRequestData));
+      }
+    } else {
+      $.notify("Select at least 1 request.", "error");
+    }
   }
+}
+
+function exportLeaves(controller) {
+  controller.exportLeaves().then((response)=>{
+    $("#loader").delay(100).fadeOut("slow");
+    $("#loader-wrapper").delay(500).fadeOut("slow");
+    if(response.status == 200) {
+      location.href = "/Export.csv";
+    }
+  });
 }

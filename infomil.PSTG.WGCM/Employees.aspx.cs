@@ -76,14 +76,14 @@ namespace infomil.PSTG.WGCM
         }
 
         [WebMethod]
-        public static string CreateTeam(string TEAMNAME, string TEAMLEAD, string TEAMMANAGER, string TEAMMEMBERS)
+        public static string CreateTeam(string TEAMNAME, string TEAMLEAD, string TEAMMANAGER, string TEAMMEMBERS, string TEAMGMANAGER)
         {
             string result = "OK";
             try
             {
                 if (!Helper.TeamExist(TEAMNAME))
                 {
-                    Helper.AddXmlData(SiteMaster.teamDB, "teamList", "team", new Team(TEAMNAME, TEAMLEAD, TEAMMANAGER, TEAMMEMBERS));
+                    Helper.AddXmlData(SiteMaster.teamDB, "teamList", "team", new Team(TEAMNAME, TEAMLEAD, TEAMMANAGER, TEAMMEMBERS, TEAMGMANAGER));
                 }
                 else
                 {

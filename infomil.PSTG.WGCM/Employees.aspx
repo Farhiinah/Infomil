@@ -18,7 +18,6 @@
                             <ul class="list-group list-group-horizontal-lg">
                                 <li class="tabItem list-group-item text-center active" onclick="changeTab('All employees')"><a href="javascript:void(0)" class="text-white">All employees</a></li>
                                 <li class="tabItem list-group-item text-center" onclick="changeTab('Teams')"><a class="text-dark" href="javascript:void(0)">Teams</a></li>
-
                             </ul>
                         </div>
                     </div>
@@ -159,6 +158,11 @@
                     <div class="modal-body">
                         <div class="input-group mb-3">
                             <input id="teamName" type="text" class="form-control" placeholder="Team name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlSelect1">Team General manager</label>
+                            <select class="form-control" id="teamGMList" required>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="exampleFormControlSelect1">Manager</label>

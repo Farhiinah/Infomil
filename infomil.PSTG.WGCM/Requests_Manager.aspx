@@ -17,6 +17,7 @@
                         <div class="card-body">
                             <ul class="list-group list-group-horizontal-lg">
                                 <li class="tabItem list-group-item text-center active" onclick=""><a href="javascript:void(0)" class="text-white">Requests</a></li>
+                                <li class="tabItem list-group-item text-center" id="exportLeave"><a class="text-dark" href="javascript:void(0)">Export employee leaves</a></li>
                             </ul>
                         </div>
                     </div>
@@ -25,13 +26,13 @@
                             <div class="card-body align-center">
                                 <h3 class="card-title float-left mb-0 mt-2"><span># of requests: </span><span id="totalRequests">0</span></h3>
                                 <ul class="nav nav-tabs float-right border-0 tab-list-emp">
-                                    <li class="nav-item" data-toggle="modal" data-target="#newLeave">
+                                    <li class="nav-item">
                                         <a class="nav-link active border-0 font-20 grid-view" style="color: #6a782c;" href="javascript:void(0)" id="approveBtn">Approve</a>
                                     </li>
-                                    <li class="nav-item" data-toggle="modal" data-target="#newLeave">
-                                        <a class="nav-link active border-0 font-20 grid-view" style="color: #f6822d;" href="javascript:void(0)" id="escalateBtn">Escalate</a>
+                                    <li class="nav-item">
+                                        <a class="nav-link active border-0 font-20 grid-view" style="color: #f6822d;" href="javascript:void(0)" id="escalateBtn">Approve & Escalate</a>
                                     </li>
-                                    <li class="nav-item" data-toggle="modal" data-target="#newLeave">
+                                    <li class="nav-item">
                                         <a class="nav-link active border-0 font-20 grid-view" style="color: #ac2936;" href="javascript:void(0)" id="rejectBtn">Reject</a>
                                     </li>
                                 </ul>
@@ -71,7 +72,7 @@
     <script src="assets/js/RequestManager.js"></script>
     <script type="text/javascript" src="assets/js/request.js"></script>
     <script>
-        if (JSON.parse(localStorage.getItem("CurrentUser")).LVLOFACCESS == "5a56dcc19d924247b5d1f1284a3505b5") {
+        if (JSON.parse(localStorage.getItem("CurrentUser")).LVLOFACCESS == "67292de3411d48ce8e8e7f4247fa07eb") {
             $("#escalateBtn").hide();
         }
     </script>

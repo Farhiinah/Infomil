@@ -80,7 +80,12 @@ class EmployeeManager {
           </div>
           <br/>
           Team lead: ${team.LEAD.FIRSTNAME + " " + team.LEAD.LASTNAME} <br/>
-          Team manager: ${team.TEAMMANAGER.FIRSTNAME + " " + team.TEAMMANAGER.LASTNAME}
+          Team manager: ${
+            team.TEAMMANAGER.FIRSTNAME + " " + team.TEAMMANAGER.LASTNAME
+          } <br/>
+          Team general manager: ${
+            team.GMANAGER.FIRSTNAME + " " + team.GMANAGER.LASTNAME
+          }
           </div>
           </div>
           </div>
@@ -112,14 +117,18 @@ class EmployeeManager {
       teamLeadDropdown: this._buildTeamFormFx.buildTeamLeadDropdown(),
       teamMemberDropdown: this._buildTeamFormFx.buildMemberDropdown(),
       teamManagerDropdown: this._buildTeamFormFx.buildManagerDropdown(),
+      teamGManagerDropdown: this._buildTeamFormFx.buildGManagerDropdown(),
     };
   }
   _buildTeamFormFx = {
     buildTeamLeadDropdown: () => {
       let teamLeadData = [];
       this.USERLIST.forEach((user) => {
-        let currentUserAccess = user.LVLOFACCESS.NAME;
-        if (currentUserAccess == "Team lead" && user.ACTIVE) {
+        let currentUserAccess = user.LVLOFACCESS.ID;
+        if (
+          currentUserAccess == "94d7b41571da4cccb3d0cb11cc620d69" &&
+          user.ACTIVE
+        ) {
           teamLeadData.push(`
             <option value="${user.ID}">${
             user.FIRSTNAME + " " + user.LASTNAME
@@ -129,11 +138,31 @@ class EmployeeManager {
       });
       return teamLeadData;
     },
+    buildGManagerDropdown: () => {
+      let gmanagerData = [];
+      this.USERLIST.forEach((user) => {
+        let currentUserAccess = user.LVLOFACCESS.ID;
+        if (
+          currentUserAccess == "67292de3411d48ce8e8e7f4247fa07eb" &&
+          user.ACTIVE
+        ) {
+          gmanagerData.push(`
+            <option value="${user.ID}">${
+            user.FIRSTNAME + " " + user.LASTNAME
+          }</option>
+          `);
+        }
+      });
+      return gmanagerData;
+    },
     buildManagerDropdown: () => {
       let managerData = [];
       this.USERLIST.forEach((user) => {
-        let currentUserAccess = user.LVLOFACCESS.NAME;
-        if (currentUserAccess == "Manager" && user.ACTIVE) {
+        let currentUserAccess = user.LVLOFACCESS.ID;
+        if (
+          currentUserAccess == "5a56dcc19d924247b5d1f1284a3505b5" &&
+          user.ACTIVE
+        ) {
           managerData.push(`
             <option value="${user.ID}">${
             user.FIRSTNAME + " " + user.LASTNAME
@@ -146,11 +175,12 @@ class EmployeeManager {
     buildMemberDropdown: () => {
       let teamMemberData = [];
       this.USERLIST.forEach((user) => {
-        let currentUserAccess = user.LVLOFACCESS.NAME;
+        let currentUserAccess = user.LVLOFACCESS.ID;
         if (
-          currentUserAccess != "Team lead" &&
-          currentUserAccess != "Admin" &&
-          currentUserAccess != "Manager" &&
+          currentUserAccess != "94d7b41571da4cccb3d0cb11cc620d69" &&
+          currentUserAccess != "87e096fd6d7a4e19ae4135b39e485b07" &&
+          currentUserAccess != "5a56dcc19d924247b5d1f1284a3505b5" &&
+          currentUserAccess != "67292de3411d48ce8e8e7f4247fa07eb" &&
           user.ACTIVE
         ) {
           teamMemberData.push({
@@ -301,10 +331,7 @@ class EmployeeManager {
         break;
       case "delete":
         this._utilFx
-          .confirm(
-            "Are you sure you want to delete this team?",
-            "Delete team"
-          )
+          .confirm("Are you sure you want to delete this team?", "Delete team")
           .then((choice) => {
             if (choice) {
               this._utilFx
@@ -330,7 +357,7 @@ class EmployeeManager {
   }
   _teamOpfx = {
     createTeam: () => {
-      let teamMemberData = $("#employeeList").select2('data');
+      let teamMemberData = $("#employeeList").select2("data");
       let teamMembersFinal = "";
       if (teamMemberData.length > 0) {
         teamMemberData.forEach(function (member, index) {
@@ -349,6 +376,7 @@ class EmployeeManager {
           .children("option:selected")
           .val(),
         TEAMMEMBERS: teamMembersFinal,
+        TEAMGMANAGER: $("#teamGMList").children("option:selected").val(),
       };
       console.log(teamData);
       return this._utilFx.serverRequest("CreateTeam", JSON.stringify(teamData));

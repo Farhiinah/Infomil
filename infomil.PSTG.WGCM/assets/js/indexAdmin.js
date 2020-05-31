@@ -45,6 +45,12 @@ let dashboardLoadData = () => {
         leaveRequestConstruct,
         "No active request."
       );
+      
+      app.renderList(
+        "#leavelistCurrentDayDashboard",
+        dashboardManager.onLeaveToday(),
+        "No user on leave today."
+      )
 
       buildChart([
         leaveConstruct.totalLeaves,
@@ -123,22 +129,4 @@ function buildBarChart(leaveData) {
       },
     },
   });
-}
-
-function requestMod(request, leaveId) {
-  new App()
-    .build()
-    .then((app) => {
-      new RequestManager(
-        app.CURRENTUSER,
-        app.USERLIST,
-        app.ACCESSLIST,
-        app.TEAMLIST,
-        app.LEAVELIST
-      ).requestMod(request, [leaveId]);
-      dashboardLoadData();
-    })
-    .catch((err) => {
-      console.log(err);
-    });
 }

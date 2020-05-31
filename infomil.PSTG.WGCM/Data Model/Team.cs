@@ -11,14 +11,16 @@ namespace infomil.PSTG.WGCM.Data_Model
         public string LEAD { get; set; }
         public string TEAMMANAGER { get; set; }
         public string MEMBERS { get; set; }
+        public string GMANAGER { get; set; }
 
-        public Team(string name, string lead, string manager, string members)
+        public Team(string name, string lead, string manager, string members, string gmanager)
         {
             this.ID = Regex.Replace(Guid.NewGuid().ToString(), "[-]", "").Replace(" ", String.Empty);
             this.NAME = name;
             this.LEAD = lead;
             this.TEAMMANAGER = manager;
             this.MEMBERS = members;
+            this.GMANAGER = gmanager;
         }
     }
 }

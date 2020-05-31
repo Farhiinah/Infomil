@@ -136,18 +136,16 @@
                                         <a href="Leaves_Manager.aspx" class="d-inline-block float-right text-primary"><i class="customSuitCase fa fa-suitcase"></i></a>
                                     </div>
                                     <div class="card-body recent-activ" id="leavelistDashboard" style="max-height: 285px; overflow-y: auto;">
-                                        
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="row">
                             <div class="col-md-6 requestManagement">
                                 <div class="card ctm-border-radius shadow-sm flex-fill grow">
                                     <div class="card-header">
-                                        <h3 class="card-title mb-0">
-                                            Team summary
+                                        <h3 class="card-title mb-0">Team summary
                                         </h3>
                                     </div>
                                     <div class="card-body">
@@ -163,7 +161,6 @@
                                         <a href="Requests_Manager.aspx" class="d-inline-block float-right text-primary"><i class="customSuitCase fa fa-envelope"></i></a>
                                     </div>
                                     <div class="card-body recent-activ" id="requestlistDashboard" style="max-height: 285px; overflow-y: auto;">
-                                        
                                     </div>
                                 </div>
                             </div>
@@ -171,6 +168,19 @@
                         <!-- / Chart -->
 
                         <div class="row">
+                            
+                            <div class="col-lg-6 col-md-12 leaveManagement absenceList">
+                                <!-- Today -->
+                                <div class="card flex-fill today-list shadow-sm grow">
+                                    <div class="card-header">
+                                        <h3 class="card-title mb-0 d-inline-block">On leave today</h3>
+                                    </div>
+                                    <div class="card-body recent-activ" style="max-height: 285px; overflow-y: auto;">
+                                    <ul id="leavelistCurrentDayDashboard"></ul>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="col-lg-6 col-md-12 userManagement">
                                 <!-- Team Leads List -->
                                 <div class="card flex-fill team-lead shadow-sm grow">
@@ -191,6 +201,12 @@
     </div>
 
     <script src="assets/js/RequestManager.js"></script>
+    <script src="assets/js/request.js"></script>
     <script src="assets/js/DashboardManager.js"></script>
     <script defer type="text/javascript" src="assets/js/indexAdmin.js"></script>
+    <script>
+        if (JSON.parse(localStorage.getItem("CurrentUser")).LVLOFACCESS == "678af57675744c22a9b47c11eced0aa8") {
+            $(".absenceList").hide();
+        }
+    </script>
 </asp:Content>

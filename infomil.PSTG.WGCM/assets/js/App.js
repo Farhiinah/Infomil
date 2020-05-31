@@ -139,6 +139,9 @@ class App {
       if (user.ID == team.TEAMMANAGER) {
         team.TEAMMANAGER = user;
       }
+      if (user.ID == team.GMANAGER) {
+        team.GMANAGER = user;
+      }
       let currentTeamMembers = team.MEMBERS;
       currentTeamMembers.split(";").forEach((teamMember) => {
         if (teamMember == user.ID) {

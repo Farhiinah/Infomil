@@ -10,6 +10,10 @@ using System;
 using System.Reflection;
 using System.Diagnostics;
 using System.Net.Mail;
+using System.Data;
+using System.Linq;
+using System.IO;
+using System.Net;
 
 namespace infomil.PSTG.WGCM.Data_Model
 {
@@ -340,6 +344,30 @@ namespace infomil.PSTG.WGCM.Data_Model
                 response = e.Message;
             }
             return response;
+        }
+
+        public static void jsonStringToCSV(string jsonContent)
+        {
+            var dataTable = (DataTable)JsonConvert.DeserializeObject(jsonContent, (typeof(DataTable)));
+
+            //Datatable to CSV
+            var lines = new List<string>();
+            string[] columnNames = dataTable.Columns.Cast<DataColumn>().
+                                              Select(column => column.ColumnName).
+                                              ToArray();
+            var header = string.Join(",", columnNames);
+            lines.Add(header);
+            var valueLines = dataTable.AsEnumerable()
+                               .Select(row => string.Join(",", row.ItemArray));
+            lines.AddRange(valueLines);
+            File.WriteAllLines(HttpContext.Current.Server.MapPath(@"Export.csv"), lines);
+        }
+
+        public static string ExportToCsv(string csvData)
+        {
+            string result = "OK";
+            jsonStringToCSV(@csvData);
+            return result;
         }
 
         public static string buildMailBody(string variance, XElement leave, XElement user)

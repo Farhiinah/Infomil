@@ -75,6 +75,12 @@ let employeeLoadData = () => {
       );
 
       app.renderList(
+        "#teamGMList",
+        newTeamFormConstruct.teamGManagerDropdown,
+        "No general manager available."
+      );
+
+      app.renderList(
         formInput_TeamManagerListContainer,
         newTeamFormConstruct.teamManagerDropdown,
         "No manager available."
